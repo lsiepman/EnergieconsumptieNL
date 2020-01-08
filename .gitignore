@@ -1,0 +1,13 @@
+#folders
+openaddr-collected-europe/
+dutch_energy/
+
+#filetypes
+*.exe
+*.zip
+*.html
+*.ipynb
+
+#files
+Adressen en coordinaten NL.csv
+data_energie_geo.csv
