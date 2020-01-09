@@ -1,0 +1,7 @@
+pandas
+folium
+os
+branca
+re
+numpydoc
+sphinx==1.8.5

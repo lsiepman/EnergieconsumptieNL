@@ -10,68 +10,93 @@ import pandas as pd
 import folium
 import os
 import branca.colormap as cm
+import re
+
 
 #%% SETTINGS
 os.chdir("../Data")
 pd.set_option('max_columns', 25)
 
-#%% FUNCTIES
-def DataJaarKaart(data, energiesoort, jaar):
-    """Selecteert de data die in de kaart gebruikt zal worden.
+#%% FUNCTIONS
+def MapData(data, energy_type, year):
+    """Selects the data for the map. Removes rows with 0 active connections and corrects for the number of active connections per zipcode.
     
     Parameters
     -----------
-    data : dataframe met energieconsumptiedata
-    energiesoort : str "gas", of "electricity"
-    jaar : int jaar om te bekijken
+    data : dataframe
+        energy consumption data
+    energy_type : str 
+        "gas", or "electricity"
+    year  : int 
+        year to plot
     
     Returns
     -----------
-    subset van oorspronkelijk dataframe
+    subset of original dataframe
     """
-    df = data.loc[(data["Soort"] == energiesoort) & (data["jaar"] == jaar)]
-    df = df.dropna(subset = ["LAT", "LON"]).reset_index()
+    df = data.loc[(data["type"] == energy_type) & (data["year"] == year)]
+    df = df.dropna(subset = ["LAT", "LON"]).reset_index(drop = True) #data without geolocations are removed
+    df["annual_consume_corrected"] = df["annual_consume"]/(df["num_connections"]*(df["perc_of_active_connections"]/100)) #correct for number of active connections
+    df = df.loc[df["perc_of_active_connections"]!= 0] #remove inactive connections with energy consumption 
     
     return df
 
-#def JaarKaart (data, filename, verbruik_kolom, caption_legend):
-#    """Maakt een foliumkaart en slaat deze op in de huidige working directory
-#    
-#    Parameters
-#    --------------
-#    data : dataframe met subset van energieconsumptiedata
-#    filename : str uiteindelijke bestandsnaam van de kaart, zonder bestandsextensie
-#    verbruik_kolom : naam van de kolom waarin het verbruik staat
-#    caption_legend
-#
-#    """
-#    #color scale
-#    cmap = cm.LinearColormap(['green', 'yellow', 'red'], vmin=data[verbruik_kolom].min(), vmax=data[verbruik_kolom].max())
-#    cmap.caption = caption_legend
-#    
-#    # clean data
-#    kaart = folium.Map(location = [52.092876, 5.104480], zoom_start = 8)
-#    kaart.add_child(cmap)
-#
-#    for i in range(len(data)):
-#        folium.CircleMarker(location = [data["LAT"].iloc[i], data["LON"].iloc[i]], 
-#                        radius = 3, weight = 0, fill_opacity = 1, fill = True, fill_color = linear(gas2010["annual_consume"].iloc[i])).add_to(kaart)
-
+def InteractiveMap (data, filename, usage_col, caption_legend):
+    """Creates a folium map (JS Leaflet) and saves it in the current working directory
     
+    Parameters
+    --------------
+    data : dataframe 
+        subset of the energy consumption data
+    filename : str 
+        final filename, without file extension
+    usage_col : str 
+        name of column of energy usage
+    caption_legend : str 
+        title of the legend
+        
+    Returns
+    -----------
+    HTML file with interactive map
+
+    """
+    #color scale
+    cmap = cm.LinearColormap(['green', 'yellow', 'red'], vmin=data[usage_col].min(), vmax=data[usage_col].max())
+    cmap.caption = caption_legend
+    
+    # clean data
+    interactive_map = folium.Map(location = [52.092876, 5.104480], zoom_start = 6.5)
+    interactive_map.add_child(cmap)
+
+    for i in range(len(data)):
+        folium.CircleMarker(location = [data["LAT"].iloc[i], data["LON"].iloc[i]], 
+                        radius = 2, weight = 0, fill_opacity = 1, fill = True, fill_color = cmap(data[usage_col].iloc[i])).add_to(interactive_map)
+
+    interactive_map.save("{}.html".format(filename))
     
 #%% DATA
-data = pd.read_csv("data_energie_geo.csv")
+data = pd.read_csv("data_energy_geo.csv")
+os.chdir("../Results")
 
-#%% VOORBEREIDING KAART
-gas2010 = data.loc[(data["Soort"] == "gas") & (data["jaar"] == 2010)]
+#%% PREPARATION FOR MAPS
+start_year = data["year"].min()
+last_year = data["year"].max() + 1
 
-linear = cm.LinearColormap(['green', 'yellow', 'red'], vmin=3, vmax=10)
+gas = {}
+for i in range(start_year, last_year):
+    gas["gas{}".format(i)] = MapData(data, "gas", i)
 
-linear
-#%% KAART
-#kaart = folium.Map(location = [52.092876, 5.104480], zoom_start = 8)
+elec = {} 
+for i in range(start_year, last_year):
+    elec["elec{}".format(i)] = MapData(data, "electricity", i)
 
+#%% MAPS [slow]
+for i in gas:
+    InteractiveMap(gas[i], "{}_cor".format(i), "annual_consume_corrected", "Gas consumption in {} (m3)".format(re.search(r"[0-9]{4}$", i).group()))
+    print("finished {}".format(i))
+   
 
-#%% EXPORT
-#os.chdir("../Results")
-#kaart.save("Kaart.html")
+for i in elec:
+    InteractiveMap(elec[i], "{}_cor".format(i), "annual_consume_corrected", "Electricity consumption in {} (kWh)".format(re.search(r"[0-9]{4}$", i).group()))
+    print("finished {}".format(i))
+

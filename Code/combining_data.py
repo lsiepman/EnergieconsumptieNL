@@ -15,14 +15,13 @@ import re
 os.chdir("../Data")
 pd.set_option('max_columns', 25)
 
-#%% FUNCTIES
+#%% FUNCTIONS
 def CombineFiles(list_of_files):
-    """ Combineert verschillende csv bestanden uit dezelfde map. 
-    Corrigeert ook voor de verkeerde nummering van de jaren.
-    
+    """ Combines different csv files from the same working directory. Corrects for shifted year labels.
+        
     Parameters
     -----------
-    list_of_files : lijst met csv-bestandsnamen uit de huidige working directory die moeten worden gecombineerd 
+    list_of_files : list of csv files from working directory that have to be combined 
     
     Returns
     ----------
@@ -33,8 +32,8 @@ def CombineFiles(list_of_files):
         df = pd.read_csv(file)
         name = file.replace(".csv", "")
         year = re.search(r"[0-9]{4}$", name).group()
-        year_corrected = int(year) - 1 #hier corrigeer ik voor het jaartal
-        df["jaar"] = year_corrected
+        year_corrected = int(year) - 1 #correct for the year shift
+        df["year"] = year_corrected
         data.append(df)
         
     data = pd.concat(data, sort = False)    
@@ -45,24 +44,20 @@ def CombineFiles(list_of_files):
 os.chdir("./Gas")
 gas_files = os.listdir()
 gas_data = CombineFiles(gas_files)
-gas_data["Soort"] = "gas"
+gas_data["type"] = "gas"
 
 os.chdir("../Electricity")
 elec_files = os.listdir()
 elec_data = CombineFiles(elec_files)
-elec_data["Soort"] = "electricity"
-
-
+elec_data["type"] = "electricity"
 
 os.chdir("..")
-geo_info = pd.read_csv("Adressen en coordinaten NL.csv")
-geo_info.drop(["NUMBER", "STREET", "UNIT", "DISTRICT", "REGION", "ID", "HASH", "CITY"], axis = 1, inplace = True)
-geo_info.drop_duplicates(subset = ["POSTCODE"], inplace = True)
+geo_info = pd.read_csv("Geolocation.csv")
 
-#%% COMBINEREN DATA
+#%% COMBINE DATA
 data = pd.concat([gas_data, elec_data])
 
 geo_data = pd.merge(data, geo_info, left_on = ["zipcode_from"], right_on = ["POSTCODE"], how = "left")
 
 #%% EXPORT
-geo_data.to_csv("data_energie_geo.csv", index = False)
+geo_data.to_csv("data_energy_geo.csv", index = False)
