@@ -6,8 +6,10 @@ dutch_energy/
 *.exe
 *.zip
 *.html
-*.ipynb
+
 
 #files
 Adressen en coordinaten NL.csv
 data_energie_geo.csv
+Testen Kaart.ipynb
+Testen Kaart-checkpoint.ipynb
