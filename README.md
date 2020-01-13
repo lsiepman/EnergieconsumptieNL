@@ -1,4 +1,4 @@
-# Energy comsumption in the Netherlands
+# Energy consumption in the Netherlands
 
 Enexis, Liander, and Stedin, the three major network administators in the Netherlands, publish energy consumption data as open data on their websites. 
 

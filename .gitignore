@@ -1,6 +1,7 @@
 #folders
 openaddr-collected-europe/
 dutch_energy/
+__pycache__/
 
 #filetypes
 *.exe
