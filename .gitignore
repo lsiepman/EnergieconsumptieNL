@@ -2,6 +2,7 @@
 openaddr-collected-europe/
 dutch_energy/
 __pycache__/
+gadm36_NLD_shp/
 
 #filetypes
 *.exe

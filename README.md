@@ -24,3 +24,4 @@ Short description of every .py file and its results
    - [Stedin](https://www.stedin.net/zakelijk/open-data/verbruiksgegevens)
  - Some processing was made with the code available on [GitHub](https://github.com/lucabasa/kaggle_dutch_energy/blob/master/raw_data_cleaning.ipynb)
 - Geolocation data was obtained through [OpenAddresses](https://openaddresses.io/)
+- Shapefile data was obtained from [GADM](https://gadm.org/)
