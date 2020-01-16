@@ -52,6 +52,7 @@ def CorrectForConnection(data):
     ---------
     original dataframe with a new column for the corrected_annual_consume
     """
+    data = data.loc[data["perc_of_active_connections"]!= 0]
     data["annual_consume_corrected"] = data["annual_consume"]/(data["num_connections"]*(data["perc_of_active_connections"]/100))
     
     return data
