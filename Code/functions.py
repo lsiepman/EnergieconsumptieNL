@@ -12,7 +12,9 @@ import re
 import folium
 import branca.colormap as cm
 from tqdm import tqdm
-
+import matplotlib.pyplot as plt
+from matplotlib import colorbar, colors, cm
+import cartopy.crs as ccrs
 
 # FUNCTIONS
 def CombineFiles(list_of_files):
@@ -171,3 +173,39 @@ def PlotInteractiveMapYears(energy_dict, type_energy, data_col, filename_base, u
     for i in energy_dict:
         PlotInteractiveMap(energy_dict[i], "{0}_{1}".format(filename_base, i), data_col, "{0} consumption in {1} ({2})".format(type_energy, re.search(r"[0-9]{4}$", i).group(), unit_energy)) 
         print("finished {}".format(i))
+        
+def PlotStaticMap(data, col_usage, title, label_colorbar, shapes):
+    """
+    Plots a static map of energy usage in the Netherlands. The colour of the points indicates the usage.
+    
+    Parameters
+    ------------
+    data : pandas dataframe
+        contains information about energy usage on specific locations. The longitude and latitude data should be in columns called 'LON' and 'LAT'.
+    col_usage : str
+        name of the column containing the usage data
+    title : str
+        title of the plot
+    label_colorbar : str
+        title of the color bar
+    shapes : polygons
+        a (list of) polygons that are used to draw the map
+    
+    """
+    min_data = min(data[col_usage])
+    max_data = max(data[col_usage])
+    
+    fig = plt.figure(figsize=(8, 5))
+    ax = plt.axes(projection=ccrs.PlateCarree())
+    ax.add_geometries(shapes, ccrs.PlateCarree(),
+                  edgecolor='black', facecolor='gray', alpha=0.2)
+    ax.set_extent([3, 8, 50.5, 54], ccrs.PlateCarree())
+    norm = colors.Normalize(vmin = min_data, vmax = max_data)
+    cmap = plt.get_cmap('RdYlGn_r') 
+    m = cm.ScalarMappable(cmap=cmap, norm = norm)
+
+    for point in range(len(data[col_usage])):
+        plt.plot(data["LON"].iloc[point], data["LAT"].iloc[point], 'o', color = m.to_rgba(data[col_usage].iloc[point]),transform=ccrs.PlateCarree())
+    plt.title(title)
+    cb = plt.colorbar(m)
+    cb.set_label(label_colorbar)
