@@ -3,11 +3,12 @@ openaddr-collected-europe/
 dutch_energy/
 __pycache__/
 gadm36_NLD_shp/
+National_Map_Interactive/
 
 #filetypes
 *.exe
 *.zip
-*.html
+
 
 
 #files

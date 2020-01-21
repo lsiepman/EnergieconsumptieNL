@@ -16,7 +16,7 @@ pd.set_option('max_columns', 25)
 
 #%% DATA
 data = pd.read_csv("data_energy_geo.csv")
-os.chdir("../Results")
+os.chdir("../Results/National_Map_Interactive")
 
 #%% PREPARATION FOR MAPS
 start_year = data["year"].min()

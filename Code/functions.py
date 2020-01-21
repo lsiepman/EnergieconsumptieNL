@@ -13,7 +13,8 @@ import folium
 import branca.colormap as cm
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-from matplotlib import colorbar, colors, cm
+from matplotlib import colorbar, colors
+from matplotlib import cm as cmx
 import cartopy.crs as ccrs
 
 # FUNCTIONS
@@ -174,7 +175,7 @@ def PlotInteractiveMapYears(energy_dict, type_energy, data_col, filename_base, u
         PlotInteractiveMap(energy_dict[i], "{0}_{1}".format(filename_base, i), data_col, "{0} consumption in {1} ({2})".format(type_energy, re.search(r"[0-9]{4}$", i).group(), unit_energy)) 
         print("finished {}".format(i))
         
-def PlotStaticMap(data, col_usage, title, label_colorbar, shapes):
+def PlotStaticMap(data, col_usage, title, label_colorbar, shapes, extent = [3, 8, 50.5, 54]):
     """
     Plots a static map of energy usage in the Netherlands. The colour of the points indicates the usage.
     
@@ -190,6 +191,12 @@ def PlotStaticMap(data, col_usage, title, label_colorbar, shapes):
         title of the color bar
     shapes : polygons
         a (list of) polygons that are used to draw the map
+    extent : list of 4 int
+        determines the zoom level and focus of the map. Has a default value that shows the entire country.     
+    
+    Returns
+    --------
+    Plot in the working directory
     
     """
     min_data = min(data[col_usage])
@@ -199,13 +206,15 @@ def PlotStaticMap(data, col_usage, title, label_colorbar, shapes):
     ax = plt.axes(projection=ccrs.PlateCarree())
     ax.add_geometries(shapes, ccrs.PlateCarree(),
                   edgecolor='black', facecolor='gray', alpha=0.2)
-    ax.set_extent([3, 8, 50.5, 54], ccrs.PlateCarree())
+    ax.set_extent(extent, ccrs.PlateCarree())
     norm = colors.Normalize(vmin = min_data, vmax = max_data)
     cmap = plt.get_cmap('RdYlGn_r') 
-    m = cm.ScalarMappable(cmap=cmap, norm = norm)
+    m = cmx.ScalarMappable(cmap=cmap, norm = norm)
 
     for point in range(len(data[col_usage])):
         plt.plot(data["LON"].iloc[point], data["LAT"].iloc[point], 'o', color = m.to_rgba(data[col_usage].iloc[point]),transform=ccrs.PlateCarree())
     plt.title(title)
     cb = plt.colorbar(m)
     cb.set_label(label_colorbar)
+    
+    plt.savefig(title, dpi = 300)

@@ -10,10 +10,20 @@ Short description of every .py file and its results
 - Combines all seperate Enexis, Liander, and Stedin files. 
 - Corrects difference between the year in the filename and the year the data was gathered
 - Connects it to the geolocation data.
-- Creates one file with all data (in .gitignore)
+- Creates one large file with all data (in .gitignore)
+- The output of this file is used in the other files
 
-*interactive_map_energy_consumption.py*
+*example_map_interactive.py*
 - Uses folium to create interactive html maps with energy consumption data
+- This file shows how to use the function to create maps
+
+*example_map_static.py*
+- Uses cartopy and matplotlib to create a static map with energy consumption data
+- This file shows how to use the function to create maps
+
+*functions.py*
+- All general functions are stored in this file for later use in different files.
+- Functions can be used by importing the file
 
 ## DATA
 - Energy data was taken from [Luca Basanisi
