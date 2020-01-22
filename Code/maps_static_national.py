@@ -32,10 +32,20 @@ years = list(range(2008, 2019))
 #     f.PlotStaticMap(df, "annual_consume_corrected", "Gas usage in the Netherlands {}".format(i), "Gas usage (m3)", shapes)
 #     del df
 
-i = 2010
-df = data.loc[(data["year"] == i) & (data["type"] == "gas")]
+#%% ELECTRICITY PLOTS (very slow in loop)
+# for i in years:
+#     df = data.loc[(data["year"] == i) & (data["type"] == "electricity")]
+#     df = f.CorrectForConnection(df)
+#     df = f.RemoveOutliers(df, "annual_consume_corrected")
+#     df = df.dropna(subset = ["LAT", "LON"])
+#     f.PlotStaticMap(df, "annual_consume_corrected", "Gas usage in the Netherlands {}".format(i), "Gas usage (m3)", shapes)
+#     del df
+
+
+i = 2008
+df = data.loc[(data["year"] == i) & (data["type"] == "electricity")]
 df = f.CorrectForConnection(df)
 df = f.RemoveOutliers(df, "annual_consume_corrected")
 df = df.dropna(subset = ["LAT", "LON"])
-f.PlotStaticMap(df, "annual_consume_corrected", "Gas usage in the Netherlands {}".format(i), "Gas usage (m3)", shapes)
+f.PlotStaticMap(df, "annual_consume_corrected", "Electricity usage in the Netherlands {}".format(i), "Electricity usage (kWh)", shapes)
 del df

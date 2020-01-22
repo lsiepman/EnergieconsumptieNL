@@ -10,10 +10,9 @@ import pandas as pd
 import numpy as np
 import re
 import folium
-import branca.colormap as cm
-from tqdm import tqdm
+import branca.colormap as bcm
 import matplotlib.pyplot as plt
-from matplotlib import colorbar, colors
+from matplotlib import colors
 from matplotlib import cm as cmx
 import cartopy.crs as ccrs
 
@@ -105,7 +104,7 @@ def RemoveOutliers(data, name_col):
     std_col = data[name_col].std()
     data["outlier"] = "no"
     
-    for i in tqdm(range(len(data))):
+    for i in range(len(data)):
         j = data[name_col][i]
         z = (j - mean_col)/std_col
         if np.abs(z) > threshold:
@@ -137,7 +136,7 @@ def PlotInteractiveMap (data, filename, usage_col, caption_legend):
 
     """
     #color scale
-    cmap = cm.LinearColormap(['green', 'yellow', 'red'], vmin=data[usage_col].min(), vmax=data[usage_col].max())
+    cmap = bcm.LinearColormap(['green', 'yellow', 'red'], vmin=data[usage_col].min(), vmax=data[usage_col].max())
     cmap.caption = caption_legend
     
     # clean data

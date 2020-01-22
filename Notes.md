@@ -17,8 +17,8 @@ Static maps were created with the python packages cartopy and matplotlib.
 
 *Next steps*
 - Examine which postcodes have an excessively high energy consumption (gas and/or electricity) and try to discover why
-- Visualise cities [Amsterdam, Rotterdam, The Hague, Utrecht, Eindhoven, Groningen, Tilburg, Almere, Breda, Nijmegen]
-- Visualise smaller regions on static maps for more detail (Basemap)
+- Visualise the energy usage of the 10 largest cities [Amsterdam, Rotterdam, The Hague, Utrecht, Eindhoven, Groningen, Tilburg, Almere, Breda, Nijmegen]
+
 
 
 
