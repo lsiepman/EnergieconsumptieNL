@@ -10,9 +10,11 @@ import pandas as pd
 import numpy as np
 import re
 import folium
-import branca.colormap as cm
-from tqdm import tqdm
-
+import branca.colormap as bcm
+import matplotlib.pyplot as plt
+from matplotlib import colors
+from matplotlib import cm as cmx
+import cartopy.crs as ccrs
 
 # FUNCTIONS
 def CombineFiles(list_of_files):
@@ -52,6 +54,7 @@ def CorrectForConnection(data):
     ---------
     original dataframe with a new column for the corrected_annual_consume
     """
+    data = data.loc[data["perc_of_active_connections"]!= 0]
     data["annual_consume_corrected"] = data["annual_consume"]/(data["num_connections"]*(data["perc_of_active_connections"]/100))
     
     return data
@@ -101,7 +104,7 @@ def RemoveOutliers(data, name_col):
     std_col = data[name_col].std()
     data["outlier"] = "no"
     
-    for i in tqdm(range(len(data))):
+    for i in range(len(data)):
         j = data[name_col][i]
         z = (j - mean_col)/std_col
         if np.abs(z) > threshold:
@@ -133,7 +136,7 @@ def PlotInteractiveMap (data, filename, usage_col, caption_legend):
 
     """
     #color scale
-    cmap = cm.LinearColormap(['green', 'yellow', 'red'], vmin=data[usage_col].min(), vmax=data[usage_col].max())
+    cmap = bcm.LinearColormap(['green', 'yellow', 'red'], vmin=data[usage_col].min(), vmax=data[usage_col].max())
     cmap.caption = caption_legend
     
     # clean data
@@ -170,3 +173,47 @@ def PlotInteractiveMapYears(energy_dict, type_energy, data_col, filename_base, u
     for i in energy_dict:
         PlotInteractiveMap(energy_dict[i], "{0}_{1}".format(filename_base, i), data_col, "{0} consumption in {1} ({2})".format(type_energy, re.search(r"[0-9]{4}$", i).group(), unit_energy)) 
         print("finished {}".format(i))
+        
+def PlotStaticMap(data, col_usage, title, label_colorbar, shapes, extent = [3, 8, 50.5, 54]):
+    """
+    Plots a static map of energy usage in the Netherlands. The colour of the points indicates the usage.
+    
+    Parameters
+    ------------
+    data : pandas dataframe
+        contains information about energy usage on specific locations. The longitude and latitude data should be in columns called 'LON' and 'LAT'.
+    col_usage : str
+        name of the column containing the usage data
+    title : str
+        title of the plot
+    label_colorbar : str
+        title of the color bar
+    shapes : polygons
+        a (list of) polygons that are used to draw the map
+    extent : list of 4 int
+        determines the zoom level and focus of the map. Has a default value that shows the entire country.     
+    
+    Returns
+    --------
+    Plot in the working directory
+    
+    """
+    min_data = min(data[col_usage])
+    max_data = max(data[col_usage])
+    
+    fig = plt.figure(figsize=(8, 5))
+    ax = plt.axes(projection=ccrs.PlateCarree())
+    ax.add_geometries(shapes, ccrs.PlateCarree(),
+                  edgecolor='black', facecolor='gray', alpha=0.2)
+    ax.set_extent(extent, ccrs.PlateCarree())
+    norm = colors.Normalize(vmin = min_data, vmax = max_data)
+    cmap = plt.get_cmap('RdYlGn_r') 
+    m = cmx.ScalarMappable(cmap=cmap, norm = norm)
+
+    for point in range(len(data[col_usage])):
+        plt.plot(data["LON"].iloc[point], data["LAT"].iloc[point], 'o', color = m.to_rgba(data[col_usage].iloc[point]),transform=ccrs.PlateCarree())
+    plt.title(title)
+    cb = plt.colorbar(m)
+    cb.set_label(label_colorbar)
+    
+    plt.savefig(title, dpi = 300)

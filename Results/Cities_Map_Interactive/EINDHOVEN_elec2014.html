@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_eb3efe01feba493bbfb16ede6bec780b {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_eb3efe01feba493bbfb16ede6bec780b" ></div>
+        
+</body>
+<script>    
+    
+            var map_eb3efe01feba493bbfb16ede6bec780b = L.map(
+                "map_eb3efe01feba493bbfb16ede6bec780b",
+                {
+                    center: [52.092876, 5.10448],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 6.5,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_fb1354cc149949f4806d251a1ada1171 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+    var color_map_09b7218e919045738d09b944a02a21e3 = {};
+
+    
+    color_map_09b7218e919045738d09b944a02a21e3.color = d3.scale.threshold()
+              .domain([8.218241042345277, 8.523860243106553, 8.829479443867829, 9.135098644629107, 9.440717845390383, 9.746337046151659, 10.051956246912935, 10.357575447674211, 10.66319464843549, 10.968813849196763, 11.274433049958041, 11.580052250719318, 11.885671451480594, 12.19129065224187, 12.496909853003146, 12.802529053764424, 13.1081482545257, 13.413767455286976, 13.719386656048252, 14.025005856809528, 14.330625057570806, 14.636244258332082, 14.941863459093359, 15.247482659854635, 15.55310186061591, 15.858721061377187, 16.164340262138463, 16.46995946289974, 16.775578663661015, 17.081197864422293, 17.38681706518357, 17.692436265944846, 17.998055466706123, 18.303674667467398, 18.609293868228676, 18.914913068989954, 19.220532269751228, 19.526151470512506, 19.83177067127378, 20.137389872035058, 20.443009072796336, 20.74862827355761, 21.05424747431889, 21.359866675080163, 21.66548587584144, 21.97110507660272, 22.276724277363993, 22.58234347812527, 22.887962678886545, 23.193581879647823, 23.499201080409097, 23.80482028117037, 24.11043948193165, 24.416058682692928, 24.721677883454205, 25.027297084215483, 25.332916284976758, 25.638535485738036, 25.94415468649931, 26.249773887260588, 26.555393088021862, 26.86101228878314, 27.166631489544415, 27.472250690305692, 27.77786989106697, 28.083489091828245, 28.389108292589523, 28.694727493350797, 29.000346694112075, 29.30596589487335, 29.611585095634627, 29.9172042963959, 30.22282349715718, 30.528442697918454, 30.834061898679735, 31.13968109944101, 31.445300300202288, 31.750919500963562, 32.05653870172484, 32.36215790248612, 32.66777710324739, 32.973396304008666, 33.279015504769944, 33.58463470553122, 33.8902539062925, 34.19587310705377, 34.501492307815056, 34.80711150857633, 35.112730709337605, 35.41834991009888, 35.72396911086015, 36.02958831162143, 36.33520751238271, 36.64082671314399, 36.946445913905265, 37.252065114666536, 37.557684315427814, 37.86330351618909, 38.16892271695036, 38.47454191771165, 38.78016111847292, 39.085780319234196, 39.391399519995474, 39.69701872075675, 40.00263792151803, 40.3082571222793, 40.61387632304058, 40.91949552380186, 41.225114724563134, 41.53073392532441, 41.83635312608569, 42.14197232684696, 42.44759152760824, 42.75321072836952, 43.058829929130795, 43.364449129892066, 43.67006833065334, 43.97568753141462, 44.2813067321759, 44.58692593293717, 44.89254513369845, 45.198164334459726, 45.503783535221004, 45.809402735982275, 46.11502193674355, 46.42064113750483, 46.72626033826611, 47.031879539027386, 47.337498739788664, 47.64311794054994, 47.94873714131121, 48.25435634207249, 48.55997554283377, 48.86559474359505, 49.17121394435632, 49.476833145117595, 49.78245234587887, 50.08807154664015, 50.39369074740142, 50.6993099481627, 51.00492914892398, 51.310548349685256, 51.61616755044653, 51.921786751207804, 52.22740595196908, 52.53302515273036, 52.83864435349163, 53.144263554252916, 53.449882755014194, 53.75550195577547, 54.06112115653674, 54.36674035729802, 54.6723595580593, 54.977978758820576, 55.28359795958185, 55.589217160343125, 55.8948363611044, 56.20045556186568, 56.50607476262695, 56.81169396338823, 57.11731316414951, 57.42293236491078, 57.728551565672056, 58.034170766433334, 58.33978996719461, 58.64540916795588, 58.95102836871717, 59.256647569478446, 59.562266770239724, 59.867885971000995, 60.17350517176227, 60.47912437252355, 60.78474357328483, 61.0903627740461, 61.39598197480738, 61.701601175568655, 62.00722037632993, 62.312839577091204, 62.61845877785248, 62.92407797861376, 63.22969717937504, 63.53531638013631, 63.840935580897586, 64.14655478165886, 64.45217398242013, 64.75779318318142, 65.0634123839427, 65.36903158470398, 65.67465078546525, 65.98026998622652, 66.2858891869878, 66.59150838774909, 66.89712758851036, 67.20274678927163, 67.5083659900329, 67.81398519079418, 68.11960439155546, 68.42522359231674, 68.73084279307801, 69.03646199383928, 69.34208119460055, 69.64770039536184, 69.95331959612312, 70.2589387968844, 70.56455799764566, 70.87017719840695, 71.17579639916823, 71.4814155999295, 71.78703480069078, 72.09265400145205, 72.39827320221332, 72.70389240297462, 73.00951160373589, 73.31513080449716, 73.62075000525843, 73.9263692060197, 74.231988406781, 74.53760760754227, 74.84322680830354, 75.14884600906481, 75.45446520982611, 75.76008441058738, 76.06570361134865, 76.37132281210992, 76.6769420128712, 76.98256121363247, 77.28818041439376, 77.59379961515504, 77.8994188159163, 78.20503801667758, 78.51065721743885, 78.81627641820012, 79.12189561896142, 79.42751481972269, 79.73313402048396, 80.03875322124526, 80.34437242200653, 80.6499916227678, 80.95561082352907, 81.26123002429034, 81.56684922505161, 81.87246842581291, 82.17808762657418, 82.48370682733545, 82.78932602809672, 83.094945228858, 83.40056442961927, 83.70618363038056, 84.01180283114184, 84.3174220319031, 84.62304123266438, 84.92866043342568, 85.23427963418695, 85.53989883494822, 85.84551803570949, 86.15113723647076, 86.45675643723206, 86.76237563799333, 87.0679948387546, 87.37361403951587, 87.67923324027714, 87.98485244103841, 88.29047164179971, 88.59609084256098, 88.90171004332225, 89.20732924408352, 89.51294844484482, 89.8185676456061, 90.12418684636737, 90.42980604712864, 90.7354252478899, 91.04104444865118, 91.34666364941248, 91.65228285017375, 91.95790205093502, 92.26352125169632, 92.56914045245756, 92.87475965321886, 93.18037885398013, 93.4859980547414, 93.79161725550267, 94.09723645626397, 94.40285565702524, 94.70847485778651, 95.01409405854778, 95.31971325930905, 95.62533246007033, 95.93095166083162, 96.2365708615929, 96.54219006235417, 96.84780926311544, 97.15342846387671, 97.45904766463798, 97.76466686539928, 98.07028606616055, 98.37590526692182, 98.68152446768312, 98.98714366844439, 99.29276286920566, 99.59838206996693, 99.9040012707282, 100.20962047148947, 100.51523967225077, 100.82085887301204, 101.12647807377331, 101.43209727453458, 101.73771647529588, 102.04333567605713, 102.34895487681842, 102.6545740775797, 102.96019327834097, 103.26581247910224, 103.57143167986354, 103.87705088062481, 104.18267008138608, 104.48828928214735, 104.79390848290862, 105.09952768366992, 105.40514688443119, 105.71076608519246, 106.01638528595373, 106.32200448671503, 106.62762368747627, 106.93324288823757, 107.23886208899884, 107.54448128976011, 107.85010049052138, 108.15571969128268, 108.46133889204395, 108.76695809280523, 109.0725772935665, 109.37819649432777, 109.68381569508907, 109.98943489585034, 110.29505409661161, 110.60067329737288, 110.90629249813418, 111.21191169889545, 111.51753089965672, 111.82315010041799, 112.12876930117926, 112.43438850194053, 112.74000770270183, 113.0456269034631, 113.35124610422437, 113.65686530498564, 113.96248450574691, 114.26810370650819, 114.57372290726948, 114.87934210803076, 115.18496130879203, 115.49058050955333, 115.7961997103146, 116.10181891107587, 116.40743811183714, 116.71305731259841, 117.01867651335968, 117.32429571412098, 117.62991491488225, 117.93553411564352, 118.24115331640479, 118.54677251716606, 118.85239171792733, 119.15801091868863, 119.4636301194499, 119.76924932021117, 120.07486852097244, 120.38048772173374, 120.68610692249501, 120.99172612325629, 121.29734532401756, 121.60296452477883, 121.90858372554013, 122.2142029263014, 122.51982212706267, 122.82544132782394, 123.13106052858524, 123.43667972934648, 123.74229893010778, 124.04791813086905, 124.35353733163032, 124.65915653239159, 124.96477573315289, 125.27039493391416, 125.57601413467543, 125.8816333354367, 126.18725253619797, 126.49287173695924, 126.79849093772054, 127.10411013848181, 127.40972933924309, 127.71534854000438, 128.02096774076563, 128.32658694152693, 128.6322061422882, 128.93782534304947, 129.24344454381074, 129.54906374457204, 129.8546829453333, 130.16030214609458, 130.46592134685585, 130.77154054761712, 131.0771597483784, 131.3827789491397, 131.68839814990096, 131.99401735066223, 132.2996365514235, 132.6052557521848, 132.91087495294605, 133.21649415370734, 133.52211335446862, 133.8277325552299, 134.13335175599119, 134.43897095675246, 134.74459015751373, 135.050209358275, 135.35582855903627, 135.66144775979754, 135.96706696055884, 136.2726861613201, 136.57830536208138, 136.88392456284268, 137.18954376360395, 137.49516296436522, 137.8007821651265, 138.10640136588776, 138.41202056664903, 138.71763976741033, 139.0232589681716, 139.32887816893287, 139.63449736969415, 139.94011657045542, 140.24573577121672, 140.551354971978, 140.85697417273926, 141.16259337350053, 141.46821257426183, 141.7738317750231, 142.07945097578437, 142.38507017654564, 142.69068937730694, 142.9963085780682, 143.30192777882948, 143.60754697959072, 143.91316618035202, 144.2187853811133, 144.52440458187456, 144.83002378263583, 145.13564298339713, 145.4412621841584, 145.74688138491967, 146.05250058568097, 146.35811978644224, 146.66373898720352, 146.9693581879648, 147.2749773887261, 147.58059658948736, 147.88621579024863, 148.19183499100987, 148.49745419177117, 148.80307339253244, 149.1086925932937, 149.41431179405498, 149.71993099481628, 150.02555019557755, 150.33116939633882, 150.6367885971001, 150.9424077978614, 151.24802699862266, 151.55364619938393, 151.85926540014523, 152.1648846009065, 152.47050380166777, 152.77612300242905, 153.08174220319032, 153.3873614039516, 153.69298060471286, 153.99859980547413, 154.30421900623543, 154.6098382069967, 154.91545740775797, 155.22107660851924, 155.52669580928054, 155.8323150100418, 156.13793421080308, 156.44355341156435, 156.74917261232565, 157.05479181308692, 157.3604110138482, 157.66603021460946, 157.97164941537073, 158.277268616132, 158.58288781689328, 158.88850701765458, 159.19412621841585, 159.49974541917712, 159.8053646199384, 160.1109838206997, 160.41660302146096, 160.72222222222223])
+              .range(['#008000', '#018100', '#028100', '#038200', '#048200', '#058300', '#068300', '#078400', '#088400', '#098500', '#0a8500', '#0b8600', '#0c8600', '#0d8700', '#0e8700', '#0f8800', '#108800', '#118900', '#128900', '#138a00', '#148a00', '#158b00', '#168b00', '#178c00', '#188c00', '#198d00', '#1a8d00', '#1b8e00', '#1c8e00', '#1d8f00', '#1e8f00', '#1f9000', '#209000', '#219100', '#229100', '#239200', '#249200', '#259300', '#269300', '#289400', '#299400', '#2a9500', '#2b9500', '#2c9600', '#2d9600', '#2e9700', '#2f9800', '#309800', '#319900', '#329900', '#339a00', '#349a00', '#359b00', '#369b00', '#379c00', '#389c00', '#399d00', '#3a9d00', '#3b9e00', '#3c9e00', '#3d9f00', '#3e9f00', '#3fa000', '#40a000', '#41a100', '#42a100', '#43a200', '#44a200', '#45a300', '#46a300', '#47a400', '#48a400', '#49a500', '#4aa500', '#4ba600', '#4ca600', '#4da700', '#4fa700', '#50a800', '#51a800', '#52a900', '#53a900', '#54aa00', '#55aa00', '#56ab00', '#57ab00', '#58ac00', '#59ac00', '#5aad00', '#5bad00', '#5cae00', '#5daf00', '#5eaf00', '#5fb000', '#60b000', '#61b100', '#62b100', '#63b200', '#64b200', '#65b300', '#66b300', '#67b400', '#68b400', '#69b500', '#6ab500', '#6bb600', '#6cb600', '#6db700', '#6eb700', '#6fb800', '#70b800', '#71b900', '#72b900', '#73ba00', '#74ba00', '#75bb00', '#77bb00', '#78bc00', '#79bc00', '#7abd00', '#7bbd00', '#7cbe00', '#7dbe00', '#7ebf00', '#7fbf00', '#80c000', '#81c000', '#82c100', '#83c100', '#84c200', '#85c200', '#86c300', '#87c300', '#88c400', '#89c400', '#8ac500', '#8bc500', '#8cc600', '#8dc700', '#8ec700', '#8fc800', '#90c800', '#91c900', '#92c900', '#93ca00', '#94ca00', '#95cb00', '#96cb00', '#97cc00', '#98cc00', '#99cd00', '#9acd00', '#9bce00', '#9cce00', '#9ecf00', '#9fcf00', '#a0d000', '#a1d000', '#a2d100', '#a3d100', '#a4d200', '#a5d200', '#a6d300', '#a7d300', '#a8d400', '#a9d400', '#aad500', '#abd500', '#acd600', '#add600', '#aed700', '#afd700', '#b0d800', '#b1d800', '#b2d900', '#b3d900', '#b4da00', '#b5da00', '#b6db00', '#b7db00', '#b8dc00', '#b9dc00', '#badd00', '#bbde00', '#bcde00', '#bddf00', '#bedf00', '#bfe000', '#c0e000', '#c1e100', '#c2e100', '#c3e200', '#c5e200', '#c6e300', '#c7e300', '#c8e400', '#c9e400', '#cae500', '#cbe500', '#cce600', '#cde600', '#cee700', '#cfe700', '#d0e800', '#d1e800', '#d2e900', '#d3e900', '#d4ea00', '#d5ea00', '#d6eb00', '#d7eb00', '#d8ec00', '#d9ec00', '#daed00', '#dbed00', '#dcee00', '#ddee00', '#deef00', '#dfef00', '#e0f000', '#e1f000', '#e2f100', '#e3f100', '#e4f200', '#e5f200', '#e6f300', '#e7f300', '#e8f400', '#e9f500', '#eaf500', '#ebf600', '#edf600', '#eef700', '#eff700', '#f0f800', '#f1f800', '#f2f900', '#f3f900', '#f4fa00', '#f5fa00', '#f6fb00', '#f7fb00', '#f8fc00', '#f9fc00', '#fafd00', '#fbfd00', '#fcfe00', '#fdfe00', '#feff00', '#ffff00', '#ffff00', '#fffe00', '#fffd00', '#fffc00', '#fffb00', '#fffa00', '#fff900', '#fff800', '#fff700', '#fff600', '#fff500', '#fff400', '#fff300', '#fff200', '#fff100', '#fff000', '#ffef00', '#ffee00', '#ffed00', '#ffeb00', '#ffea00', '#ffe900', '#ffe800', '#ffe700', '#ffe600', '#ffe500', '#ffe400', '#ffe300', '#ffe200', '#ffe100', '#ffe000', '#ffdf00', '#ffde00', '#ffdd00', '#ffdc00', '#ffdb00', '#ffda00', '#ffd900', '#ffd800', '#ffd700', '#ffd600', '#ffd500', '#ffd400', '#ffd300', '#ffd200', '#ffd100', '#ffd000', '#ffcf00', '#ffce00', '#ffcd00', '#ffcc00', '#ffcb00', '#ffca00', '#ffc900', '#ffc800', '#ffc700', '#ffc600', '#ffc500', '#ffc300', '#ffc200', '#ffc100', '#ffc000', '#ffbf00', '#ffbe00', '#ffbd00', '#ffbc00', '#ffbb00', '#ffba00', '#ffb900', '#ffb800', '#ffb700', '#ffb600', '#ffb500', '#ffb400', '#ffb300', '#ffb200', '#ffb100', '#ffb000', '#ffaf00', '#ffae00', '#ffad00', '#ffac00', '#ffab00', '#ffaa00', '#ffa900', '#ffa800', '#ffa700', '#ffa600', '#ffa500', '#ffa400', '#ffa300', '#ffa200', '#ffa100', '#ffa000', '#ff9f00', '#ff9e00', '#ff9c00', '#ff9b00', '#ff9a00', '#ff9900', '#ff9800', '#ff9700', '#ff9600', '#ff9500', '#ff9400', '#ff9300', '#ff9200', '#ff9100', '#ff9000', '#ff8f00', '#ff8e00', '#ff8d00', '#ff8c00', '#ff8b00', '#ff8a00', '#ff8900', '#ff8800', '#ff8700', '#ff8600', '#ff8500', '#ff8400', '#ff8300', '#ff8200', '#ff8100', '#ff8000', '#ff7f00', '#ff7e00', '#ff7d00', '#ff7c00', '#ff7b00', '#ff7a00', '#ff7900', '#ff7800', '#ff7700', '#ff7500', '#ff7400', '#ff7300', '#ff7200', '#ff7100', '#ff7000', '#ff6f00', '#ff6e00', '#ff6d00', '#ff6c00', '#ff6b00', '#ff6a00', '#ff6900', '#ff6800', '#ff6700', '#ff6600', '#ff6500', '#ff6400', '#ff6300', '#ff6200', '#ff6100', '#ff6000', '#ff5f00', '#ff5e00', '#ff5d00', '#ff5c00', '#ff5b00', '#ff5a00', '#ff5900', '#ff5800', '#ff5700', '#ff5600', '#ff5500', '#ff5400', '#ff5300', '#ff5200', '#ff5100', '#ff5000', '#ff4f00', '#ff4d00', '#ff4c00', '#ff4b00', '#ff4a00', '#ff4900', '#ff4800', '#ff4700', '#ff4600', '#ff4500', '#ff4400', '#ff4300', '#ff4200', '#ff4100', '#ff4000', '#ff3f00', '#ff3e00', '#ff3d00', '#ff3c00', '#ff3b00', '#ff3a00', '#ff3900', '#ff3800', '#ff3700', '#ff3600', '#ff3500', '#ff3400', '#ff3300', '#ff3200', '#ff3100', '#ff3000', '#ff2f00', '#ff2e00', '#ff2d00', '#ff2c00', '#ff2b00', '#ff2a00', '#ff2900', '#ff2800', '#ff2600', '#ff2500', '#ff2400', '#ff2300', '#ff2200', '#ff2100', '#ff2000', '#ff1f00', '#ff1e00', '#ff1d00', '#ff1c00', '#ff1b00', '#ff1a00', '#ff1900', '#ff1800', '#ff1700', '#ff1600', '#ff1500', '#ff1400', '#ff1300', '#ff1200', '#ff1100', '#ff1000', '#ff0f00', '#ff0e00', '#ff0d00', '#ff0c00', '#ff0b00', '#ff0a00', '#ff0900', '#ff0800', '#ff0700', '#ff0600', '#ff0500', '#ff0400', '#ff0300', '#ff0200', '#ff0100', '#ff0000']);
+    
+
+    color_map_09b7218e919045738d09b944a02a21e3.x = d3.scale.linear()
+              .domain([8.218241042345277, 160.72222222222223])
+              .range([0, 400]);
+
+    color_map_09b7218e919045738d09b944a02a21e3.legend = L.control({position: 'topright'});
+    color_map_09b7218e919045738d09b944a02a21e3.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
+    color_map_09b7218e919045738d09b944a02a21e3.legend.addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+
+    color_map_09b7218e919045738d09b944a02a21e3.xAxis = d3.svg.axis()
+        .scale(color_map_09b7218e919045738d09b944a02a21e3.x)
+        .orient("top")
+        .tickSize(1)
+        .tickValues([8.218241042345277, 84.47023163228374, 160.72222222222223]);
+
+    color_map_09b7218e919045738d09b944a02a21e3.svg = d3.select(".legend.leaflet-control").append("svg")
+        .attr("id", 'legend')
+        .attr("width", 450)
+        .attr("height", 40);
+
+    color_map_09b7218e919045738d09b944a02a21e3.g = color_map_09b7218e919045738d09b944a02a21e3.svg.append("g")
+        .attr("class", "key")
+        .attr("transform", "translate(25,16)");
+
+    color_map_09b7218e919045738d09b944a02a21e3.g.selectAll("rect")
+        .data(color_map_09b7218e919045738d09b944a02a21e3.color.range().map(function(d, i) {
+          return {
+            x0: i ? color_map_09b7218e919045738d09b944a02a21e3.x(color_map_09b7218e919045738d09b944a02a21e3.color.domain()[i - 1]) : color_map_09b7218e919045738d09b944a02a21e3.x.range()[0],
+            x1: i < color_map_09b7218e919045738d09b944a02a21e3.color.domain().length ? color_map_09b7218e919045738d09b944a02a21e3.x(color_map_09b7218e919045738d09b944a02a21e3.color.domain()[i]) : color_map_09b7218e919045738d09b944a02a21e3.x.range()[1],
+            z: d
+          };
+        }))
+      .enter().append("rect")
+        .attr("height", 10)
+        .attr("x", function(d) { return d.x0; })
+        .attr("width", function(d) { return d.x1 - d.x0; })
+        .style("fill", function(d) { return d.z; });
+
+    color_map_09b7218e919045738d09b944a02a21e3.g.call(color_map_09b7218e919045738d09b944a02a21e3.xAxis).append("text")
+        .attr("class", "caption")
+        .attr("y", 21)
+        .text('Electricity usage in EINDHOVEN [2014] (kWh)');
+    
+            var circle_marker_92b14470f91f477ab37f56a477490faf = L.circleMarker(
+                [51.43848970000001, 5.4730637],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#58ac00", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_ba1db1cbf5ad40839b71982281db288f = L.circleMarker(
+                [51.438907799999996, 5.4726707],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#b6db00", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_a89076020659440fbb09a539e44773a3 = L.circleMarker(
+                [51.4387548, 5.4725958],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f0f800", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_b63218171a7a427989cfe64924460889 = L.circleMarker(
+                [51.4390435, 5.4718900999999995],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#a2d100", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_f80a733ce5ac4591882cd68038902272 = L.circleMarker(
+                [51.4389018, 5.4717926],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#96cb00", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_e6dd14d3290e477884c147f86b52d56b = L.circleMarker(
+                [51.4391862, 5.4711524],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#67b300", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_0ac003697f9c45e59e116d597de20ed3 = L.circleMarker(
+                [51.4390423, 5.4710971],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5cae00", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_7a6ad9908688411e9029067e8516c695 = L.circleMarker(
+                [51.4392984, 5.470969599999999],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fffe00", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_d7d431cc4fc34c309f369472f8fa7fd0 = L.circleMarker(
+                [51.439503, 5.4721155],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#b2d900", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_a30c0f449b84480da9d058ebd3c22089 = L.circleMarker(
+                [51.4393516, 5.4728995000000005],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c1e100", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_74bc31bc2f8644c8990959d20def0371 = L.circleMarker(
+                [51.4389278, 5.4743774000000025],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0000", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_7d9ad526e4734976b4beb8434a4d7b79 = L.circleMarker(
+                [51.4455019, 5.4533513],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#078400", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_71610084921446cd91878077a81e7f4a = L.circleMarker(
+                [51.447213299999994, 5.458349299999999],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#008000", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_58c72890cbee4cc18b2f58f76042f2d1 = L.circleMarker(
+                [51.4463619, 5.4560989],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3a9d00", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_657ed7feb5d14c92ad4506a3a7b1c724 = L.circleMarker(
+                [51.4460425, 5.4557667],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#acd600", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_db510b8816b54edca098e3f45cfc0315 = L.circleMarker(
+                [51.4458482, 5.456607599999999],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#339a00", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_9293898c7fe645178c454bdf5c06fe02 = L.circleMarker(
+                [51.4459804, 5.4559809],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff6a00", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_ff01018c3321476fa11b9a84ab84149d = L.circleMarker(
+                [51.49672320000001, 5.503483999999999],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff2b00", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_b00ca7afd2144960a429fa588d20dbbc = L.circleMarker(
+                [51.44946820000001, 5.444882],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#eff700", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+    
+            var circle_marker_1a8a434caf5540c3b06a01754ee88f15 = L.circleMarker(
+                [51.44978920000001, 5.4448722],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff5200", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 0}
+            ).addTo(map_eb3efe01feba493bbfb16ede6bec780b);
+        
+</script>
