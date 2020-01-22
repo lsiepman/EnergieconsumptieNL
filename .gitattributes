@@ -1,1 +1,2 @@
 Results/*linguist-vendored
+*.html linguist-detectable=false
