@@ -4,7 +4,7 @@ Enexis, Liander, and Stedin, the three major network administators in the Nether
 
 
 ## Description of code
-Short description of every .py file and its results
+Short description of every code file and its results
 
 *combining_data.py*
 - Combines all seperate Enexis, Liander, and Stedin files. 
@@ -24,6 +24,19 @@ Short description of every .py file and its results
 *functions.py*
 - All general functions are stored in this file for later use in different files.
 - Functions can be used by importing the file
+
+*graphs_energy_over_time.ipynb*
+- Data exploration.
+- Graphs over time for  the entire country and some cities
+
+*maps_interactive_cities.py*
+- Plots folium maps with energy consumption for the 10 largest cities in the Netherlands.
+[Amsterdam, Rotterdam, The Hague, Utrecht, Eindhoven, Groningen, Tilburg, Almere, Breda, Nijmegen]
+
+*maps_static_national.py*
+- Creates a cartopy map with all gas or electricity usage for a year
+- There are too much data points, so the process is very slow, especially for the more recent years of electricity usage
+
 
 ## DATA
 - Energy data was taken from [Luca Basanisi

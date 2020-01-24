@@ -23,26 +23,17 @@ os.chdir("../Results/National_Map_Static")
 #%% PLOT PREP
 years = list(range(2008, 2019))
 
-#%% GAS plots (very slow in loop)
-# for i in years:
-#     df = data.loc[(data["year"] == i) & (data["type"] == "gas")]
-#     df = f.CorrectForConnection(df)
-#     df = f.RemoveOutliers(df, "annual_consume_corrected")
-#     df = df.dropna(subset = ["LAT", "LON"])
-#     f.PlotStaticMap(df, "annual_consume_corrected", "Gas usage in the Netherlands {}".format(i), "Gas usage (m3)", shapes)
-#     del df
+#%% GAS plots (too slow in loop)
+# i = 2008
+# df = data.loc[(data["year"] == i) & (data["type"] == "gas")]
+# df = f.CorrectForConnection(df)
+# df = f.RemoveOutliers(df, "annual_consume_corrected")
+# df = df.dropna(subset = ["LAT", "LON"])
+# f.PlotStaticMap(df, "annual_consume_corrected", "Gas usage in the Netherlands {}".format(i), "Gas usage (m3)", shapes)
+# del df
 
-#%% ELECTRICITY PLOTS (very slow in loop)
-# for i in years:
-#     df = data.loc[(data["year"] == i) & (data["type"] == "electricity")]
-#     df = f.CorrectForConnection(df)
-#     df = f.RemoveOutliers(df, "annual_consume_corrected")
-#     df = df.dropna(subset = ["LAT", "LON"])
-#     f.PlotStaticMap(df, "annual_consume_corrected", "Gas usage in the Netherlands {}".format(i), "Gas usage (m3)", shapes)
-#     del df
-
-
-i = 2008
+#%% ELECTRICITY PLOTS (too slow in loop)
+i = 2015
 df = data.loc[(data["year"] == i) & (data["type"] == "electricity")]
 df = f.CorrectForConnection(df)
 df = f.RemoveOutliers(df, "annual_consume_corrected")
