@@ -5,6 +5,7 @@ __pycache__/
 gadm36_NLD_shp/
 National_Map_Interactive/
 .ipynb_checkpoints/
+CBS/
 
 #filetypes
 *.exe
