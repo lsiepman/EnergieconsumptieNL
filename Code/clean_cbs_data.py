@@ -8,9 +8,11 @@ Created on Fri Feb 14 12:46:34 2020
 #%% IMPORTS
 from functions_cbs import CleanCBS
 import os
+import pandas as pd
 
 #%% SETTINGS
 os.chdir("../Data/CBS")
+pd.set_option('max_columns', 25)
 
 #%% DATA
 lst_files = os.listdir()

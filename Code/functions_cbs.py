@@ -8,26 +8,34 @@ Created on Fri Feb 14 11:47:42 2020
 #%% IMPORTS
 import pandas as pd
 import numpy as np
-import os
 import re
 
 
 #%% FUNCTIONS
 class CleanCBS:
+    """Collection of functions to read, clean, combine and select the relevant data from the CBS datasets
+    
+    Parameters
+    ------------
+    file_list : list
+        List of strings with filenames of files that need to be read from the current working directory
+        """
     def __init__(self, file_lst):
         self.file_lst = file_lst
-        
-        
+     
         
     def ReadFiles(self):
+        """Reads files into a dictionary of dataframes"""
         files = {}
         for i in range(len(self.file_lst)):
             files[i] = pd.read_csv(self.file_lst[i], sep = ";", index_col = "ID", dtype = str)
         self.files = files
         
         return self.files
+    
         
     def StripCols(self):
+        """Strips leading and trailing whitespaces is all columns in every dataframe in the dictionary of dataframes"""
         for frame in self.files.values():
             for col in frame.columns:
                 frame[col] = frame[col].str.strip()
@@ -35,7 +43,23 @@ class CleanCBS:
         
                 
     def CleanFiles(self, repl = None):
-         
+        """Replaces the codes used in the CBS data with the human understandable values from the metadata files. This function contains replacement dictionaries for the following datasets: 
+            - Bevolking; geslacht, leeftijd en viercijferige postcode
+            - Bevolking; geslacht, migratieachtergrond, viercijferige postcode
+            - Bevolking; geslacht, positie huishouden, viercijferige postcode
+            - Huishoudens; huishoudenssamenstelling en viercijferige postcode
+            
+        For other datasets, a replacement dictionary should be supplied.
+        
+        Parameters
+        -----------
+        repl : dict
+            Replacement dictionary. Default value = None.
+            
+        Returns
+        ----------
+        Decoded dataset in the form of a dictionary of dataframes
+        """ 
         age_dist = {
             "Geslacht" : {"T001038" : "Total", "3000" : "Men", "4000" : "Women"}, 
             "Leeftijd" : {"10000" : "Total", "22000" : "95<", "70100" : "0-5", 
@@ -93,36 +117,43 @@ class CleanCBS:
         for idx in range(len(files)):
             cat_file = "".join(re.findall(r"[^0-9;,-]", self.file_lst[idx]))
             
-            
             if repl == None:
                 if cat_file == "CBS  bevolking geslacht leeftijd postcode .csv":
-                    repl = age_dist.copy()
+                    files[idx] = files[idx].replace(age_dist)
                     files[idx]["Bevolking_1"] = files[idx]["Bevolking_1"].astype(float)
                     
                 elif cat_file == "CBS  geslacht migratieachtergrond postcode .csv":
-                    repl = imm_dist.copy()
+                    files[idx] = files[idx].replace(imm_dist)
                     files[idx]["Bevolking_1"] = files[idx]["Bevolking_1"].astype(float)
                     
                 elif cat_file == "CBS  geslacht positie huishouden postcode .csv":
-                    repl = pos_house.copy()
+                    files[idx] = files[idx].replace(pos_house)
                     files[idx]["Bevolking_1"] = files[idx]["Bevolking_1"].astype(float)
                     
                 elif cat_file == "CBS  huishoudenssamenstelling postcode .csv":
-                    repl = household.copy()
+                    files[idx] = files[idx].replace(household)
                     files[idx][["ParticuliereHuishoudens_1", "GemiddeldeHuishoudensgrootte_2"]] = files[idx][["ParticuliereHuishoudens_1", "GemiddeldeHuishoudensgrootte_2"]].astype(float)
                     
                 else:
-                    print("no default replacement dict, supply repl")
-                    
-                files[idx] = files[idx].replace(repl)
+                    print("no default replacement dict, supply repl")            
+            
                 files[idx]["Postcode"] = files[idx]["Postcode"].str.replace("PC", "")
                 files[idx]["Perioden"] = files[idx]["Perioden"].str.replace("JJ00", "").astype(int)
-            
+                
+            else:
+                files[idx] = files[idx].replace(repl)
+                    
         self.clean_files = files
-        
         return self.clean_files
         
+    
     def CombineFiles(self):
+        """Combines separate dataframes based on the common section of the filenames. It strips any number from the filename, but requires the text part of the filenames to be identical in order to be combined
+        
+        Returns
+        -------
+        Dictionary of combined dataframes
+        """
         combine = {"Age" : pd.DataFrame(), "Immigration" : pd.DataFrame(),
                    "Position_household" : pd.DataFrame(), 
                    "Household_composition" : pd.DataFrame()}
@@ -147,7 +178,21 @@ class CleanCBS:
         self.combine = combine
         return self.combine
     
+    
     def SelectYears(self, start_year, end_year):
+        """Selects the relevant years from dataframes in a dictionary of dataframes. It requires the dataframes to have a column "Perioden".
+        
+        Parameters
+        ----------
+        start_year : int
+            First relevant year
+        end_year : int
+            Last relevant year
+            
+        Returns
+        ---------
+        Dictionary of dataframes with only the relevant years
+        """
         combination_dict = self.combine
         self.start_year = start_year
         self.end_year = end_year
@@ -160,7 +205,9 @@ class CleanCBS:
         self.combine_years = combination_dict
         return self.combine_years
     
+    
     def SaveCSV(self):
+        """Saves the dataframes in a dictionary of dataframes to csv files when the dataframe is not empty."""
         for key, value in self.combine_years.items():
             if len(value) > 0:
                 value.to_csv("Clean_CBS - {0} ({1}-{2}).csv".format(key, self.start_year, self.end_year))
