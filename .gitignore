@@ -6,6 +6,7 @@ gadm36_NLD_shp/
 National_Map_Interactive/
 .ipynb_checkpoints/
 CBS/
+.pylint.d/
 
 #filetypes
 *.exe
