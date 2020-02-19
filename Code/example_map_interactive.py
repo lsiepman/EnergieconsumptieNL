@@ -1,41 +1,32 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Jan  7 09:11:35 2020
-Interactive visualisation
+Example map interactive
 
 @author: laura
 """
-#%% IMPORTS
-import pandas as pd
 import os
-import functions_general as fct
-import functions_interactive_map as fim
+import pandas as pd
+from functions_interactive_map import MapInteractive
 
-#%% SETTINGS
-os.chdir("../Data")
-pd.set_option('max_columns', 25)
+def main():
+    # SETTINGS
+    os.chdir("..")
+    pd.set_option('max_columns', 25)
 
-#%% DATA
-data = pd.read_csv("data_energy_geo.csv")
+    DATA_PATH = os.getcwd() + "/Data/"
+    RESULT_PATH = os.getcwd() + "/Results/National_Map_Interactive/"
 
+    # DATA
+    data = pd.read_csv(DATA_PATH + "data_energy_geo.csv")
 
-#%% PREPARATION FOR MAPS
-start_year = data["year"].min()
-last_year = data["year"].max() + 1
+    # CREATING MAPS
+    gas = MapInteractive(data, "gas", 2008)
+    gas.plotMap(RESULT_PATH + "Gas NL 2008", "Gas (m3) usage in 2008")
 
-gas = {}
-for i in range(start_year, last_year):
-    gas["gas{}".format(i)] = fim.InteractiveMapData(data, "gas", i)
-    gas["gas{}".format(i)] = fct.RemoveOutliers(gas["gas{}".format(i)], "annual_consume_corrected")
+    elec = MapInteractive(data, "electricity", 2008)
+    elec.plotMap(RESULT_PATH + "Electricity NL 2008",
+                 "Electricity (kWh) usage in 2008")
 
-elec = {} 
-for i in range(start_year, last_year):
-    elec["elec{}".format(i)] = fim.InteractiveMapData(data, "electricity", i)
-    elec["elec{}".format(i)] = fct.RemoveOutliers(elec["elec{}".format(i)], "annual_consume_corrected")
-
-#%% MAPS - more RAM needed for later years
-os.chdir("../Results/National_Map_Interactive")
-fim.PlotInteractiveMapYears(gas, "Gas", "annual_consume_corrected", "NL", "m3")
-fim.PlotInteractiveMapYears(elec, "Electricity", "annual_consume_corrected", "NL", "kWh")
-
-
+if __name__ == "__main__":
+    main()
