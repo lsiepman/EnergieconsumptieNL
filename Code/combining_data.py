@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jan  6 10:22:48 2020
+Created on Mon Jan  6 10:22:48 2020.
 
 Combining data
 @author: laura
@@ -9,6 +9,7 @@ Combining data
 import os
 import pandas as pd
 from functions_combine import loadAndCombine
+
 
 def main():
     # SETTINGS

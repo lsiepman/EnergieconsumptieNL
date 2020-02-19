@@ -60,7 +60,3 @@ def loadAndCombine(path, en_type):
     file_data["type"] = en_type
 
     return file_data
-
-
-if __name__ == "__main__":
-    main()
