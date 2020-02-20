@@ -270,3 +270,73 @@ class CleanCBS:
                 value.to_csv(base_name.format(key,
                                               self.start_year,
                                               self.end_year))
+
+
+class ConnectEnergyCBS:
+    """Collection of function to connect Energy data to CBS data."""
+
+    def __init__(self):
+        self.data_dict = None
+
+    @staticmethod
+    def createOrdinalColumn(data, conv_col, new_col, values):
+        """Convert a column with strings to ordinal.
+
+        The strings are replaced with numbers.
+
+        Parameters
+        ----------
+        data : pandas dataframe
+            Data with a column that needs conversion.
+        conv_col : str
+            Column name of the column that needs conversion.
+        new_col : str
+            Column name of the column to store the ordinal values.
+        values : list of str
+            All values in the conv_col, in the order they are ordinal.
+
+        Returns
+        -------
+        data : pandas dataframe
+            Dataframe with the newly created column.
+
+        """
+
+        values_dict = dict(zip(values, np.arange(len(values))))
+        data[new_col] = data[conv_col].map(values_dict)
+
+        return data
+
+    def splitYears(self, data, year_col):
+        """Split dataframe into dictionary of dataframes.
+
+        Every dataframe contains one year of data
+
+        Parameters
+        ----------
+        data : pandas dataframe
+            Dataframe that contains multiple years of data.
+        year_col : str
+            Name of columns containing the years
+
+        Returns
+        -------
+        None.
+
+        """
+        data = data.dropna(subset=[year_col])
+        data[year_col] = data[year_col].astype(int)
+        start_year = min(data[year_col])
+        end_year = max(data[year_col]) + 1
+
+        data_dict = {}
+        for i in range(start_year, end_year):
+            data_dict[i] = data.loc[data[year_col] == i]
+
+        self.data_dict = data_dict
+
+
+    def returnDataDict(self):
+        """Return dictionary of dataframe."""
+        return self.data_dict
+
