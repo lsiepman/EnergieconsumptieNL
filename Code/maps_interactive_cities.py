@@ -10,6 +10,7 @@ from functions_interactive_map import MultipleInteractiveMaps
 
 
 def main():
+    "Execute file"
     # SETTINGS
     os.chdir("..")
     pd.set_option('max_columns', 25)

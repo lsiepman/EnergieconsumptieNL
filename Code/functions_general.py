@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jan 14 13:19:54 2020
+Created on Tue Jan 14 13:19:54 2020.
 
 @author: laura
 """
 
-import pandas as pd
 import numpy as np
-import re
 
-# FUNCTIONS
 
 class GeneralFunctions:
-    """Collection of functions used in multiple scripts"""
+    """Collection of functions used in multiple scripts."""
 
     @staticmethod
     def correctForConnection(data):

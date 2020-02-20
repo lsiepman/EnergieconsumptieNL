@@ -12,6 +12,7 @@ from functions_combine import loadAndCombine
 
 
 def main():
+    """Execute file."""
     # SETTINGS
     os.chdir("..")
     GAS_PATH = os.getcwd() + "/Data/Gas/"

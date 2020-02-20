@@ -1,24 +1,22 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Feb 13 14:03:56 2020
+Created on Thu Feb 13 14:03:56 2020.
 
 @author: laura
 """
 
-#%% IMPORTS
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 from matplotlib import colors
 from matplotlib import cm as cmx
 from functions_general import GeneralFunctions
 
-#%%
-class StaticMap:
-    """Functions for plotting static maps"""
 
+class StaticMap:
+    """Functions for plotting static maps."""
     def __init__(self, data, year, energy_type):
         """
-        Select data for static map
+        Select data for static map.
 
         Parameters
         ----------
@@ -43,7 +41,7 @@ class StaticMap:
         condition2 = (data["type"] == self.energy_type)
         data = data.loc[condition1 & condition2]
 
-        data = data.dropna(subset = ["LAT", "LON"]).reset_index(drop=True)
+        data = data.dropna(subset=["LAT", "LON"]).reset_index(drop=True)
         data = GeneralFunctions.correctForConnection(data)
         data = GeneralFunctions.removeOutliers(data, self.data_col)
 
@@ -81,7 +79,7 @@ class StaticMap:
         fig = plt.figure(figsize=(8, 5))
         ax = plt.axes(projection=ccrs.PlateCarree())
         ax.add_geometries(shapes, ccrs.PlateCarree(),
-                      edgecolor='black', facecolor='gray', alpha=0.2)
+                          edgecolor='black', facecolor='gray', alpha=0.2)
         ax.set_extent(extent, ccrs.PlateCarree())
         norm = colors.Normalize(vmin=min_data, vmax=max_data)
         cmap = plt.get_cmap('RdYlGn_r')

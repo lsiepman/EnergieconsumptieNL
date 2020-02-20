@@ -5,10 +5,10 @@ Created on Thu Feb 13 13:06:45 2020.
 @author: laura
 """
 
-from functions_general import GeneralFunctions
+import re
 import folium
 import branca.colormap as bcm
-import re
+from functions_general import GeneralFunctions
 
 
 class MapInteractive:
@@ -102,7 +102,6 @@ class MultipleInteractiveMaps(MapInteractive):
 
     Uses the MapInteractive class
     """
-
     def __init__(self, data, energy_type):
         """Select the data for the interactive map.
 
@@ -170,4 +169,4 @@ class MultipleInteractiveMaps(MapInteractive):
             self.data = self.energy_dict[i]
             self.plotMap("{0}_{1}".format(filename_base, i), caption)
 
-            print("finished {}".format(i, filename_base))
+            print("finished {0}{1}".format(i, filename_base))
