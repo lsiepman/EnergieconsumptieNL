@@ -8,6 +8,8 @@ Created on Fri Feb 14 11:47:42 2020.
 import re
 import numpy as np
 import pandas as pd
+from scipy.spatial.distance import pdist, squareform
+from functions_general import GeneralFunctions
 
 
 class CleanCBS:
@@ -277,6 +279,7 @@ class ConnectEnergyCBS:
 
     def __init__(self):
         self.data_dict = None
+        self.dist_dict = None
 
     @staticmethod
     def createOrdinalColumn(data, conv_col, new_col, values):
@@ -301,42 +304,124 @@ class ConnectEnergyCBS:
             Dataframe with the newly created column.
 
         """
-
         values_dict = dict(zip(values, np.arange(len(values))))
         data[new_col] = data[conv_col].map(values_dict)
 
         return data
 
-    def splitYears(self, data, year_col):
+    def splitGroup(self, data, group_col):
         """Split dataframe into dictionary of dataframes.
 
-        Every dataframe contains one year of data
+        Every dataframe contains one group of data
 
         Parameters
         ----------
         data : pandas dataframe
-            Dataframe that contains multiple years of data.
-        year_col : str
-            Name of columns containing the years
+            Dataframe that contains multiple groups of data.
+        group_col : str
+            Name of column containing the groups
 
         Returns
         -------
         None.
 
         """
-        data = data.dropna(subset=[year_col])
-        data[year_col] = data[year_col].astype(int)
-        start_year = min(data[year_col])
-        end_year = max(data[year_col]) + 1
+        data = data.dropna(subset=[group_col])
+        groups = data[group_col].unique().tolist()
 
         data_dict = {}
-        for i in range(start_year, end_year):
-            data_dict[i] = data.loc[data[year_col] == i]
-
+        for i in groups:
+            data_dict[i] = data.loc[data[group_col] == i]
+            data_dict[i] = data_dict[i].drop(group_col, axis=1)
         self.data_dict = data_dict
 
+    def returnDict(self, type_dict):
+        """Return dictionary of dataframes.
 
-    def returnDataDict(self):
-        """Return dictionary of dataframe."""
-        return self.data_dict
+        Can return either the distance dict or the data dict
 
+        Parameters
+        ----------
+        type_dict : str
+            Dictionary type to return. "data", or "distance"
+
+        Returns
+        -------
+        Dictionary of dataframes.
+        """
+        if type_dict == "data":
+            return self.data_dict
+        elif type_dict == "distance":
+            return self.dist_dict
+        else:
+            print("Unknown dictionary type")
+
+    @staticmethod
+    def groupEnergy(data, en_type):
+        """Group data on the Postcode4 level.
+
+        This is performed on one energy type.
+
+        Parameters
+        ----------
+        data : pandas dataframe
+            A dataframe containing data for one energy type.
+        en_type : str
+            Energy type, as it occurs in the "type" column of data.
+
+        Returns
+        -------
+        df_mean : pandas dataframe
+            Dataframe with data grouped on Postcode4, calculates the mean.
+        df_median : pandas dataframe
+            Dataframe with data grouped on Postcode4, calculates the median.
+
+        """
+        df = data.loc[data["type"] == en_type]
+        df = GeneralFunctions.removeOutliers(df, "annual_consume_corrected")
+
+        # create a column for the groupby
+        df["Postcode4"] = df["POSTCODE"].str.extract("([0-9]+)")
+
+        df_mean = df.groupby(["Postcode4",
+                              "year"]).mean().reset_index(level="year")
+        df_median = df.groupby(["Postcode4",
+                                "year"]).median().reset_index(level="year")
+
+        return df_mean, df_median
+
+    def calcDistances(self, columns=None, dist_measure="euclidean"):
+        """Calculate distances between postcodes.
+
+        Uses the scipy pdist function to calculate pairwise distances.
+
+        Parameters
+        ----------
+        columns : list of str, optional
+            List of columns to be used for the distance calculation.
+            The default is None.
+        dist_measure : str, optional
+            Type of distance measure to be used. The default is "euclidean".
+            Other options are: ‘braycurtis’, ‘canberra’, ‘chebyshev’,
+            ‘cityblock’, ‘correlation’, ‘cosine’, ‘dice’, ‘euclidean’,
+            ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘matching’,
+            ‘minkowski’, ‘rogerstanimoto’, ‘russellrao’, ‘seuclidean’,
+            ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’
+
+        Returns
+        -------
+        None.
+        """
+        dist_dict = {}
+        for frame in self.data_dict.keys():
+            if columns is None:
+                print("No columns specified, using all columns.")
+                columns = self.data_dict[frame].columns.tolist()
+
+            df = self.data_dict[frame][columns]
+            dist_dict[frame] = \
+                pd.DataFrame(squareform(pdist(df, metric=dist_measure)),
+                             index=df.index,
+                             columns=df.index)
+
+        self.dist_dict = dist_dict
