@@ -7,6 +7,7 @@ Created on Mon Feb 24 10:25:42 2020.
 
 import os
 import pandas as pd
+import numpy as np
 from functions_general import GeneralFunctions as GF
 from functions_cbs import ConnectEnergyCBS as CEC
 
@@ -46,6 +47,14 @@ gas_mean_cec.splitGroup(gas_mean, "year")
 gas_mean_cec.calcDistances()
 gmcec = gas_mean_cec.returnDict("distance")
 
-gas_median_cec = CEC()
-gas_median_cec.splitGroup(gas_median, "year")
-gas_median_cec.calcDistances()
+
+test = gmcec[2010]
+test2 = pd.DataFrame(test.unstack())
+test2.index.names = ["PostcodeA", "PostcodeB"]
+test2.columns = ["Distance"]
+test2.reset_index(inplace=True)
+test2 = test2.loc[pd.DataFrame(
+                  np.sort(test2[['PostcodeA', 'PostcodeB']], 1),
+                  index=test2.index).drop_duplicates(keep='first').index]
+test2.replace(0, np.nan, inplace=True)
+test3 = test2.nsmallest(50, "Distance")

@@ -277,8 +277,8 @@ class CleanCBS:
 class ConnectEnergyCBS:
     """Collection of function to connect Energy data to CBS data."""
 
-    def __init__(self):
-        self.data_dict = None
+    def __init__(self, data, group_col):
+        self.data_dict = self.splitGroup(data, group_col)
         self.dist_dict = None
 
     @staticmethod
@@ -425,3 +425,40 @@ class ConnectEnergyCBS:
                              columns=df.index)
 
         self.dist_dict = dist_dict
+
+    def findNSmallestDistances(self, n):
+        """Create dataframe with the n smallest distances.
+
+        Parameters
+        ----------
+        n : int
+            Number of smallest distances for each dataframe in the dictionary
+            of dataframes.
+
+        Returns
+        -------
+        results : pandas dataframe
+            Dataframe with the n smallest distances for each dataframe
+            in the dictionary of dataframes.
+        """
+        temp_lst = []
+        for frame in self.dist_dict.keys():
+            df = self.dist_dict[frame]
+            df = df.unstack()
+
+            df.index.names = ["PostcodeA", "PostcodeB"]
+            df.columns = ["Distance"]
+            df.reset_index(inplace=True)
+
+            # remove mirror duplicates
+            df = df.loc[pd.DataFrame(
+                        np.sort(df[['PostcodeA', 'PostcodeB']], 1),
+                        index=df.index).drop_duplicates(keep='first').index]
+            df.replace(0, np.nan, inplace=True)
+            chunk = df.nsmallest(n, "Distance")
+            chunk["Group"] = frame
+            temp_lst.append(chunk)
+
+        results = pd.concat(temp_lst)
+
+        return results
