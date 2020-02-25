@@ -30,7 +30,14 @@ class CleanCBS:
         None.
 
         """
+        # initialize everything
         self.file_lst = file_lst
+        self.files = None
+        self.clean_files = None
+        self.combine = None
+        self.start_year = None
+        self.end_year = None
+        self.combine_years = None
 
         # replacement dictionaries for cleanFiles function
         self.age_dist = {
@@ -277,9 +284,33 @@ class CleanCBS:
 class ConnectEnergyCBS:
     """Collection of function to connect Energy data to CBS data."""
 
-    def __init__(self, data, group_col):
-        self.data_dict = self.splitGroup(data, group_col)
-        self.dist_dict = None
+    def __init__(self, data, group_col, columns=None,
+                 dist_measure="euclidean"):
+        """Calculate the distances for different postcodes.
+
+        Parameters
+        ----------
+        data : pandas dataframe
+            Dataframe that contains multiple groups of data.
+        group_col : str
+            Name of column containing the groups.
+        columns : list of strings, optional
+            Column names for columns to use in the distance calculation.
+            The default is None.
+        dist_measure : str, optional
+            Type of distance measure to be used. The default is "euclidean".
+            Other options are: ‘braycurtis’, ‘canberra’, ‘chebyshev’,
+            ‘cityblock’, ‘correlation’, ‘cosine’, ‘dice’, ‘euclidean’,
+            ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘matching’,
+            ‘minkowski’, ‘rogerstanimoto’, ‘russellrao’, ‘seuclidean’,
+            ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’
+
+        Returns
+        -------
+        None.
+        """
+        self.splitGroup(data, group_col)
+        self.calcDistances(columns, dist_measure)
 
     @staticmethod
     def createOrdinalColumn(data, conv_col, new_col, values):
@@ -351,7 +382,7 @@ class ConnectEnergyCBS:
         """
         if type_dict == "data":
             return self.data_dict
-        elif type_dict == "distance":
+        if type_dict == "distance":
             return self.dist_dict
         else:
             print("Unknown dictionary type")
@@ -383,10 +414,8 @@ class ConnectEnergyCBS:
         # create a column for the groupby
         df["Postcode4"] = df["POSTCODE"].str.extract("([0-9]+)")
 
-        df_mean = df.groupby(["Postcode4",
-                              "year"]).mean().reset_index(level="year")
-        df_median = df.groupby(["Postcode4",
-                                "year"]).median().reset_index(level="year")
+        df_mean = df.groupby(["Postcode4", "year"]).mean()
+        df_median = df.groupby(["Postcode4", "year"]).median()
 
         return df_mean, df_median
 
@@ -444,7 +473,7 @@ class ConnectEnergyCBS:
         temp_lst = []
         for frame in self.dist_dict.keys():
             df = self.dist_dict[frame]
-            df = df.unstack()
+            df = pd.DataFrame(df.unstack())
 
             df.index.names = ["PostcodeA", "PostcodeB"]
             df.columns = ["Distance"]
