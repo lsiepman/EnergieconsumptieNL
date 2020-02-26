@@ -15,13 +15,13 @@ def main():
     """Execute file."""
     # SETTINGS
     os.chdir("..")
-    DATA_PATH = os.getcwd() + "/Data/"
-    RESULTS_PATH = os.getcwd() + "/Results/Distances/"
+    DATA_PATH = os.path.join(os.getcwd(), "Data")
+    RESULTS_PATH = os.path.join(os.getcwd(), "Results/Distances")
     pd.set_option("max_columns", 25)
     pd.options.mode.chained_assignment = None
 
     # DATA
-    energy = pd.read_csv(DATA_PATH + "data_energy_geo.csv")
+    energy = pd.read_csv(os.path.join(DATA_PATH, "data_energy_geo.csv"))
 
     # DATA PREP
     en_cols_to_drop = ["net_manager", "purchase_area", "street",
@@ -72,24 +72,29 @@ def main():
     energy_median_dist = energy_median_cec.findNSmallestDistances(50)
 
     # EXPORT RESULTS
-    gas_mean_dist.to_csv(RESULTS_PATH + "smallest_50_distances_gas_mean.csv",
-                         index=False)
-    gas_median_dist.to_csv(RESULTS_PATH
-                           + "smallest_50_distances_gas_median.csv",
-                           index=False)
+    gas_mean_file = os.path.join(RESULTS_PATH,
+                                 "smallest_50_distances_gas_mean.csv")
+    gas_mean_dist.to_csv(gas_mean_file, index=False)
 
-    elec_mean_dist.to_csv(RESULTS_PATH + "smallest_50_distances_elec_mean.csv",
-                          index=False)
-    elec_median_dist.to_csv(RESULTS_PATH
-                            + "smallest_50_distances_elec_median.csv",
-                            index=False)
+    gas_median_file = os.path.join(RESULTS_PATH,
+                                   "smallest_50_distances_gas_median.csv")
+    gas_median_dist.to_csv(gas_median_file, index=False)
 
-    energy_mean_dist.to_csv(RESULTS_PATH
-                            + "smallest_50_distances_energy_mean.csv",
-                            index=False)
-    energy_median_dist.to_csv(RESULTS_PATH
-                              + "smallest_50_distances_energy_median.csv",
-                              index=False)
+    elec_mean_file = os.path.join(RESULTS_PATH,
+                                  "smallest_50_distances_elec_mean.csv")
+    elec_mean_dist.to_csv(elec_mean_file, index=False)
+
+    elec_median_file = os.path.join(RESULTS_PATH,
+                                    "smallest_50_distances_elec_median.csv")
+    elec_median_dist.to_csv(elec_median_file, index=False)
+
+    energy_mean_file = os.path.join(RESULTS_PATH,
+                                    "smallest_50_distances_energy_mean.csv")
+    energy_mean_dist.to_csv(energy_mean_file, index=False)
+
+    en_median_file = os.path.join(RESULTS_PATH,
+                                  "smallest_50_distances_energy_median.csv")
+    energy_median_dist.to_csv(en_median_file, index=False)
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ Created on Thu Feb 13 14:03:56 2020.
 @author: laura
 """
 
+import os
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 from matplotlib import colors
@@ -95,4 +96,5 @@ class StaticMap:
         cb = plt.colorbar(m)
         cb.set_label(label_colorbar)
 
-        plt.savefig(path + title, dpi=300)
+        save_loc = os.path.join(path, title)
+        plt.savefig(save_loc, dpi=300)

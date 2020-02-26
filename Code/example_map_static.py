@@ -16,13 +16,13 @@ def main():
     os.chdir("..")
     pd.set_option('max_columns', 25)
 
-    DATA_PATH = os.getcwd() + "/Data/"
-    RESULT_PATH = os.getcwd() + "/Results/National_Map_Static/"
+    DATA_PATH = os.path.join(os.getcwd(), "Data")
+    RESULT_PATH = os.path.join(os.getcwd(), "/Results/National_Map_Static/")
 
     # DATA
-    shape_loc = DATA_PATH + "gadm36_NLD_shp/gadm36_NLD_1.shp"
+    shape_loc = os.path.join(DATA_PATH, "gadm36_NLD_shp/gadm36_NLD_1.shp")
     shapes = list(shpreader.Reader(shape_loc).geometries())
-    data = pd.read_csv(DATA_PATH + "data_energy_geo.csv")
+    data = pd.read_csv(os.path.join(DATA_PATH, "data_energy_geo.csv"))
 
     # PLOT
     gas_2008 = StaticMap(data, 2008, "gas")

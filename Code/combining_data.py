@@ -15,8 +15,8 @@ def main():
     """Execute file."""
     # SETTINGS
     os.chdir("..")
-    GAS_PATH = os.getcwd() + "/Data/Gas/"
-    ELECTRICITY_PATH = os.getcwd() + "/Data/Electricity/"
+    GAS_PATH = os.path.join(os.getcwd(), "Data/Gas")
+    ELECTRICITY_PATH = os.path.join(os.getcwd(), "Data/Electricity")
     pd.set_option('max_columns', 25)
 
     # DATA

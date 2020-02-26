@@ -9,6 +9,7 @@ import os
 import pandas as pd
 from functions_cbs import CleanCBS
 
+
 def main():
     """Execute file."""
     # SETTINGS
@@ -17,7 +18,7 @@ def main():
 
     # DATA
     lst_files = os.listdir()
-    lst_files = [i for i in lst_files if i.startswith("CBS") \
+    lst_files = [i for i in lst_files if i.startswith("CBS")
                  and "METADATA" not in i]
 
     func = CleanCBS(lst_files)
@@ -31,6 +32,7 @@ def main():
 
     # EXPORT
     func.saveCSV()
+
 
 if __name__ == "__main__":
     main()

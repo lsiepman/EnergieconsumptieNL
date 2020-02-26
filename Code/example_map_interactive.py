@@ -15,18 +15,19 @@ def main():
     os.chdir("..")
     pd.set_option('max_columns', 25)
 
-    DATA_PATH = os.getcwd() + "/Data/"
-    RESULT_PATH = os.getcwd() + "/Results/National_Map_Interactive/"
+    DATA_PATH = os.path.join(os.getcwd(), "Data")
+    RESULT_PATH = os.path.join(os.getcwd(), "Results/National_Map_Interactive")
 
     # DATA
-    data = pd.read_csv(DATA_PATH + "data_energy_geo.csv")
+    data = pd.read_csv(os.path.join(DATA_PATH, "data_energy_geo.csv"))
 
     # CREATING MAPS
     gas = MapInteractive(data, "gas", 2008)
-    gas.plotMap(RESULT_PATH + "Gas NL 2008", "Gas (m3) usage in 2008")
+    gas.plotMap(os.path.join(RESULT_PATH, "Gas NL 2008"),
+                "Gas (m3) usage in 2008")
 
     elec = MapInteractive(data, "electricity", 2008)
-    elec.plotMap(RESULT_PATH + "Electricity NL 2008",
+    elec.plotMap(os.path.join(RESULT_PATH, "Electricity NL 2008"),
                  "Electricity (kWh) usage in 2008")
 
 if __name__ == "__main__":
