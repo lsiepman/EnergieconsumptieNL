@@ -282,9 +282,9 @@ class CleanCBS:
 
 
 class ConnectEnergyCBS:
-    """Collection of function to connect Energy data to CBS data."""
+    """Collection of functions to connect Energy data to CBS data."""
 
-    def __init__(self, data, group_col, columns=None,
+    def __init__(self, data, group_col, type_data, columns=None,
                  dist_measure="euclidean"):
         """Calculate the distances for different postcodes.
 
@@ -310,7 +310,9 @@ class ConnectEnergyCBS:
         None.
         """
         self.splitGroup(data, group_col)
-        self.calcDistances(columns, dist_measure)
+
+        if type_data == "energy":
+            self.calcDistances(columns, dist_measure)
 
     @staticmethod
     def createOrdinalColumn(data, conv_col, new_col, values):
@@ -475,13 +477,13 @@ class ConnectEnergyCBS:
             df = self.dist_dict[frame]
             df = pd.DataFrame(df.unstack())
 
-            df.index.names = ["PostcodeA", "PostcodeB"]
+            df.index.names = ["GroupA", "GroupB"]
             df.columns = ["Distance"]
             df.reset_index(inplace=True)
 
             # remove mirror duplicates
             df = df.loc[pd.DataFrame(
-                        np.sort(df[['PostcodeA', 'PostcodeB']], 1),
+                        np.sort(df[['GroupA', 'GroupB']], 1),
                         index=df.index).drop_duplicates(keep='first').index]
             df.replace(0, np.nan, inplace=True)
             chunk = df.nsmallest(n, "Distance")
@@ -491,3 +493,29 @@ class ConnectEnergyCBS:
         results = pd.concat(temp_lst)
 
         return results
+
+    def pivotCBS(self, index, columns, values):
+        """Pivot the cbs data to a usable format.
+
+        The pivot is necessary in order to calculate distances
+        between postcodes.
+
+        Parameters
+        ----------
+        index : str
+            Index column for new dataframe.
+        columns : list of str
+            Columns that need to be pivoted.
+        values : str
+            Values to fill the new dataframe.
+
+        Returns
+        -------
+        None.
+        """
+        for frame in self.data_dict.keys():
+            df = self.data_dict[frame]
+            df = df.pivot_table(index=[index],
+                                columns=columns,
+                                values=values)
+            self.data_dict[frame] = df

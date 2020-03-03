@@ -49,24 +49,28 @@ def main():
     energy_median.reset_index(level="year", inplace=True)
 
     # CALC DISTANCES
-    gas_mean_cec = CEC(gas_mean, "year", ["annual_consume_corrected"])
+    gas_mean_cec = CEC(gas_mean, "year", "energy",
+                       ["annual_consume_corrected"])
     gas_mean_dist = gas_mean_cec.findNSmallestDistances(50)
 
-    gas_median_cec = CEC(gas_median, "year", ["annual_consume_corrected"])
+    gas_median_cec = CEC(gas_median, "year", "energy",
+                         ["annual_consume_corrected"])
     gas_median_dist = gas_median_cec.findNSmallestDistances(50)
 
-    elec_mean_cec = CEC(elec_mean, "year", ["annual_consume_corrected"])
+    elec_mean_cec = CEC(elec_mean, "year", "energy",
+                        ["annual_consume_corrected"])
     elec_mean_dist = elec_mean_cec.findNSmallestDistances(50)
 
-    elec_median_cec = CEC(elec_median, "year", ["annual_consume_corrected"])
+    elec_median_cec = CEC(elec_median, "year", "energy",
+                          ["annual_consume_corrected"])
     elec_median_dist = elec_median_cec.findNSmallestDistances(50)
 
-    energy_mean_cec = CEC(energy_mean, "year",
+    energy_mean_cec = CEC(energy_mean, "year", "energy",
                           ["annual_consume_corrected_GAS",
                            "annual_consume_corrected_ELEC"])
     energy_mean_dist = energy_mean_cec.findNSmallestDistances(50)
 
-    energy_median_cec = CEC(energy_median, "year",
+    energy_median_cec = CEC(energy_median, "year", "energy",
                             ["annual_consume_corrected_GAS",
                              "annual_consume_corrected_ELEC"])
     energy_median_dist = energy_median_cec.findNSmallestDistances(50)
