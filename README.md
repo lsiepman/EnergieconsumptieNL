@@ -5,6 +5,9 @@ Enexis, Liander, and Stedin, the three major network administators in the Nether
 ## Description of code
 Short description of every code file and its results
 
+*cbs_distances.py*
+- Calculates simmilarity between postcodes for the differect CBS postcode datasets.
+
 *clean_cbs_data.py*
 - Combines and cleans all data from the CBS (see DATA section).
 
@@ -17,6 +20,7 @@ Short description of every code file and its results
 
 *connect_cbs_to_energy.py*
 - Connects the CBS data to the Energy data
+- For each year and category, the 50 most similar postcode pairs are examined.
 
 *example_map_interactive.py*
 - Uses folium to create interactive html maps with energy consumption data
@@ -28,6 +32,8 @@ Short description of every code file and its results
 
 *functions_cbs.py*
 - Stores all classes that are used to work with the CBS data.
+  - CleanCBS
+  - ConnectEnergyCBS
 
 *functions_combine.py*
 - Stores all functions used to clean and combine the energy data. 

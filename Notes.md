@@ -29,11 +29,10 @@ Data on demographics was found for each year of energy data. Four datasets were 
 - Household composition per postcode per year
 - Position in household per postcode per year
 
-All datasets were grouped and summarised. 
-Similarities between postcodes **will be** examined for:
+All energy datasets were grouped and summarised Both the averages and medians were calculated per postcode per year. 
+Similarities between postcodes were examined for:
 - all separate demographics and energy types
-- all separate dempgraphics and combined energy consumption
-- different combinations of demographics and energy comsumptions
+- all separate demographics and combined energy consumption
 
 *Expectations*
 1. People with a similar demographic background will live in similar neighbourhoods (e.g. similar levels of insulation) and will show similar energy consumption.
