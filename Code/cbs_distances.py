@@ -7,7 +7,7 @@ Created on Mon Mar  2 15:30:45 2020.
 
 import os
 import pandas as pd
-from functions_cbs import ConnectEnergyCBS as CEC
+from functions_cbs import CalculateEnergyCBS as CEC
 
 def main():
     """Execute file."""

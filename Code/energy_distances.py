@@ -8,7 +8,7 @@ Created on Mon Feb 24 10:25:42 2020.
 import os
 import pandas as pd
 from functions_general import GeneralFunctions as GF
-from functions_cbs import ConnectEnergyCBS as CEC
+from functions_cbs import CalculateEnergyCBS as CEC
 
 
 def main():

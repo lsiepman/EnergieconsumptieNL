@@ -5,7 +5,9 @@ Created on Fri Feb 14 11:47:42 2020.
 @author: laura
 """
 
+import os
 import re
+from collections import Counter
 import numpy as np
 import pandas as pd
 from scipy.spatial.distance import pdist, squareform
@@ -281,7 +283,7 @@ class CleanCBS:
                                               self.end_year))
 
 
-class ConnectEnergyCBS:
+class CalculateEnergyCBS:
     """Collection of functions to connect Energy data to CBS data."""
 
     def __init__(self, data, group_col, type_data, columns=None,
@@ -294,6 +296,8 @@ class ConnectEnergyCBS:
             Dataframe that contains multiple groups of data.
         group_col : str
             Name of column containing the groups.
+        type_data: str
+            Type of the data, "energy" or "cbs"
         columns : list of strings, optional
             Column names for columns to use in the distance calculation.
             The default is None.
@@ -519,3 +523,51 @@ class ConnectEnergyCBS:
                                 columns=columns,
                                 values=values)
             self.data_dict[frame] = df
+
+
+class ConnectDistances:
+    """Connecting the smallest distances of energy and cbs data."""
+
+    def __init__(self, path):
+        self.common_pairs = None
+        self.readFiles(path)
+
+    def readFiles(self, path):
+        files = os.listdir(path)
+
+        data = {}
+        for i in files:
+            data[i] = pd.read_csv(os.path.join(path, i))
+
+        self.data = data
+
+    def findPostcodePairs(self):
+        postcode_pairs = {}
+        for i in self.data:
+            df = self.data[i]
+            df["Combined"] = tuple(zip(df["GroupA"], df["GroupB"], df["Group"]))
+            postcode_pairs[i] = df["Combined"]
+
+        self.postcode_pairs = postcode_pairs
+        print("Possible files to compare:")
+        print("\n".join(postcode_pairs.keys()))
+
+    @staticmethod
+    def compareObjects(s, t):
+        """See if list or tuple contains exactly the same elements."""
+        return Counter(s) == Counter(t)
+
+    def findCommonPairs(self, file_energy, file_demographics):
+
+        demographics = self.postcode_pairs[file_demographics]
+        energy = self.postcode_pairs[file_energy]
+        common_pairs = []
+
+        for i in demographics:
+            for j in energy:
+                print(i, j)
+                if self.compareObjects(i, j):
+                    common_pairs.append(i)
+
+        self.common_pairs = common_pairs
+        return common_pairs
