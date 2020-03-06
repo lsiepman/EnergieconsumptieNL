@@ -34,14 +34,17 @@ Similarities between postcodes were examined for:
 - all separate demographics and energy types
 - all separate demographics and combined energy consumption
 
+The 50 most similar postcodes were collected for each category for each year. These postcode pairs were compared with the other type of data to find common postcode pairs in the energy data and the demographics.
+
 *Expectations*
 1. People with a similar demographic background will live in similar neighbourhoods (e.g. similar levels of insulation) and will show similar energy consumption.
 
 *Results*
+1. No common postcode pairs were found between the energy data and the demographics in the 50 most similar postcodes for each category and year.
 
-TBD
+*Possible explanation*
 
-
+Since the demographics were only available on the Postcode-4 level of detail, the energy data had to be grouped. The finer details of the data were lost in this grouping to the mean and/or median. People within one Postcode-4 area are much more diverse than people within a Postcode-6 area. This diversity could not be found in the demographics. The grouping of too diverse groups might mask the similar energy usage in similar households.
 
 ## Possible next steps
 - Examine which postcodes have an excessively high energy consumption (gas and/or electricity) and try to discover why

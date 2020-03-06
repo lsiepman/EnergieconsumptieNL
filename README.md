@@ -22,6 +22,11 @@ Short description of every code file and its results
 - Connects the CBS data to the Energy data
 - For each year and category, the 50 most similar postcode pairs are examined.
 
+*energy_distances.py*
+- Calculates distances between postcodes for all energy files.
+- Energy data is grouped to Postcode 4, with the mean and the median.
+- The 50 most similar pairs per year are saved in a .csv file.
+
 *example_map_interactive.py*
 - Uses folium to create interactive html maps with energy consumption data
 - This file shows how to use the function to create maps
@@ -33,7 +38,8 @@ Short description of every code file and its results
 *functions_cbs.py*
 - Stores all classes that are used to work with the CBS data.
   - CleanCBS
-  - ConnectEnergyCBS
+  - CalculateEnergyCBS
+  - ConnectDistances
 
 *functions_combine.py*
 - Stores all functions used to clean and combine the energy data. 
