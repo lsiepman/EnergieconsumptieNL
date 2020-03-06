@@ -13,6 +13,7 @@ import pandas as pd
 from scipy.spatial.distance import pdist, squareform
 from functions_general import GeneralFunctions
 
+# pylint: disable=C0103
 
 class CleanCBS:
     """Collection of functions for to clean CBS data."""
@@ -390,8 +391,8 @@ class CalculateEnergyCBS:
             return self.data_dict
         if type_dict == "distance":
             return self.dist_dict
-        else:
-            print("Unknown dictionary type")
+        print("Unknown dictionary type")
+        return None
 
     @staticmethod
     def groupEnergy(data, en_type):
@@ -448,7 +449,7 @@ class CalculateEnergyCBS:
         None.
         """
         dist_dict = {}
-        for frame in self.data_dict.keys():
+        for frame in self.data_dict:
             if columns is None:
                 print("No columns specified, using all columns.")
                 columns = self.data_dict[frame].columns.tolist()
@@ -477,7 +478,7 @@ class CalculateEnergyCBS:
             in the dictionary of dataframes.
         """
         temp_lst = []
-        for frame in self.dist_dict.keys():
+        for frame in self.dist_dict:
             df = self.dist_dict[frame]
             df = pd.DataFrame(df.unstack())
 
@@ -487,8 +488,8 @@ class CalculateEnergyCBS:
 
             # remove mirror duplicates
             df = df.loc[pd.DataFrame(
-                        np.sort(df[['GroupA', 'GroupB']], 1),
-                        index=df.index).drop_duplicates(keep='first').index]
+                np.sort(df[['GroupA', 'GroupB']], 1),
+                index=df.index).drop_duplicates(keep='first').index]
             df.replace(0, np.nan, inplace=True)
             chunk = df.nsmallest(n, "Distance")
             chunk["Group"] = frame
@@ -517,7 +518,7 @@ class CalculateEnergyCBS:
         -------
         None.
         """
-        for frame in self.data_dict.keys():
+        for frame in self.data_dict:
             df = self.data_dict[frame]
             df = df.pivot_table(index=[index],
                                 columns=columns,
@@ -529,10 +530,36 @@ class ConnectDistances:
     """Connecting the smallest distances of energy and cbs data."""
 
     def __init__(self, path):
+        """Initiate ConnectDistances Class.
+
+        Also reads files.
+
+        Parameters
+        ----------
+        path : str
+            Path to files.
+
+        Returns
+        -------
+        None.
+        """
+
         self.common_pairs = None
+        self.postcode_pairs = None
         self.readFiles(path)
 
     def readFiles(self, path):
+        """Read files from path.
+
+        Parameters
+        ----------
+        path : str
+            Path to files.
+
+        Returns
+        -------
+        None.
+        """
         files = os.listdir(path)
 
         data = {}
@@ -542,10 +569,13 @@ class ConnectDistances:
         self.data = data
 
     def findPostcodePairs(self):
+        """Create dictionary of pandas series with postcode pairs and years."""
         postcode_pairs = {}
         for i in self.data:
             df = self.data[i]
-            df["Combined"] = tuple(zip(df["GroupA"], df["GroupB"], df["Group"]))
+            df["Combined"] = tuple(zip(df["GroupA"],
+                                       df["GroupB"],
+                                       df["Group"]))
             postcode_pairs[i] = df["Combined"]
 
         self.postcode_pairs = postcode_pairs
@@ -554,20 +584,70 @@ class ConnectDistances:
 
     @staticmethod
     def compareObjects(s, t):
-        """See if list or tuple contains exactly the same elements."""
+        """See if list or tuple contains exactly the same elements.
+
+        Parameters
+        ----------
+        s : list, tuple
+            First object to compare.
+        t : list, tuple
+            Second object to compare.
+
+        Returns
+        -------
+        bool
+            Boolean that indicates if the objects contain the same values.
+        """
         return Counter(s) == Counter(t)
 
     def findCommonPairs(self, file_energy, file_demographics):
+        """Compare postcode pairs from energy and demographic data.
 
+        Parameters
+        ----------
+        file_energy : str
+            File name energy data.
+        file_demographics : str
+            File name demographic data.
+
+        Returns
+        -------
+        None.
+        """
         demographics = self.postcode_pairs[file_demographics]
         energy = self.postcode_pairs[file_energy]
         common_pairs = []
 
         for i in demographics:
             for j in energy:
-                print(i, j)
                 if self.compareObjects(i, j):
                     common_pairs.append(i)
 
         self.common_pairs = common_pairs
-        return common_pairs
+
+    def collectCommonPairs(self, list_energy, list_demographics):
+        """Collect the common pairs from multiple combinations in dictionary.
+
+        Runs multiple comparisons and uses the findCommonPairs method.
+
+        Parameters
+        ----------
+        list_energy : list of str
+            List of energy file names.
+        list_demographics : list of str
+            List of demographic file names.
+
+        Returns
+        -------
+        cp_collection : dict
+            Dictionary with lists of common pairs. The dictionary keys consist
+            of a combination of file names.
+        """
+        cp_collection = {}
+        for en_file in list_energy:
+            for dem_file in list_demographics:
+                self.findCommonPairs(en_file, dem_file)
+                cp_collection[en_file + "_&_" + dem_file] = \
+                    self.common_pairs
+
+        return cp_collection
