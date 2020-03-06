@@ -10,6 +10,7 @@ import folium
 import branca.colormap as bcm
 from functions_general import GeneralFunctions
 
+# pylint: disable=C0103,W0231
 
 class MapInteractive:
     """Collection of Interactive Map Functions.

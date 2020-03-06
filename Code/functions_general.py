@@ -7,6 +7,7 @@ Created on Tue Jan 14 13:19:54 2020.
 
 import numpy as np
 
+# pylint: disable=C0103
 
 class GeneralFunctions:
     """Collection of functions used in multiple scripts."""

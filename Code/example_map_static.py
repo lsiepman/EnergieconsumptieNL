@@ -10,6 +10,8 @@ import pandas as pd
 import cartopy.io.shapereader as shpreader
 from functions_static_map import StaticMap
 
+# pylint: disable=C0103
+
 def main():
     """Execute file"""
     # SETTINGS

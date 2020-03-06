@@ -9,6 +9,8 @@ import os
 import pandas as pd
 from functions_cbs import CalculateEnergyCBS as CEC
 
+# pylint: disable=C0103
+
 def main():
     """Execute file."""
     # SETTINGS

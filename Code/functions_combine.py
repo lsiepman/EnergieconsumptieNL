@@ -9,6 +9,7 @@ import os
 import re
 import pandas as pd
 
+# pylint: disable=C0103
 
 def combineFiles(list_of_files):
     """Combine different csv files from the same working directory.

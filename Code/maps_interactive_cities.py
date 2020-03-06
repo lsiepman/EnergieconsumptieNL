@@ -8,6 +8,7 @@ import os
 import pandas as pd
 from functions_interactive_map import MultipleInteractiveMaps
 
+# pylint: disable=C0103
 
 def main():
     "Execute file"

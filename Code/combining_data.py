@@ -10,6 +10,7 @@ import os
 import pandas as pd
 from functions_combine import loadAndCombine
 
+# pylint: disable=C0103
 
 def main():
     """Execute file."""

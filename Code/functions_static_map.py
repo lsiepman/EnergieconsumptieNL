@@ -12,6 +12,7 @@ from matplotlib import colors
 from matplotlib import cm as cmx
 from functions_general import GeneralFunctions
 
+# pylint: disable=C0103
 
 class StaticMap:
     """Functions for plotting static maps."""
@@ -49,7 +50,7 @@ class StaticMap:
         self.data = data
 
     def plotStaticMap(self, title, label_colorbar, shapes, path,
-                      extent=[3, 8, 50.5, 54]):
+                      extent=None):
         """
         Plots a static map of energy usage in the Netherlands.
 
@@ -74,6 +75,9 @@ class StaticMap:
         Plot in the working directory or a subfolder based on title
 
         """
+        if extent is None:
+            extent = [3, 8, 50.5, 54]
+
         min_data = min(self.data[self.data_col])
         max_data = max(self.data[self.data_col])
 
